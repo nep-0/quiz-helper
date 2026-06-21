@@ -1,0 +1,4 @@
+interface:
+  display_name: "Question Bank Maker"
+  short_description: "Create quiz-bank schema question banks"
+  default_prompt: "Use $question-bank-maker to turn these notes into a validated question bank."

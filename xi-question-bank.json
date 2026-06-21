@@ -1,0 +1,2102 @@
+{
+  "bankId": "xi-2026-objective-review",
+  "title": "习思想 2026 客观题复习题库",
+  "description": "根据 xi.md 生成的客观题题库，覆盖单选、多选、判断题，重点围绕导论至第十七章的概念、定位和基本表述。",
+  "version": "1.0.0",
+  "locale": "zh-CN",
+  "subject": "习近平新时代中国特色社会主义思想概论",
+  "tags": [
+    "xi.md",
+    "2026",
+    "客观题",
+    "期末复习"
+  ],
+  "questionTypes": {
+    "single_choice": {
+      "label": "单选题",
+      "defaultPoints": 1
+    },
+    "multiple_choice": {
+      "label": "多选题",
+      "defaultPoints": 2
+    },
+    "true_false": {
+      "label": "判断题",
+      "defaultPoints": 1
+    }
+  },
+  "sections": [
+    {
+      "id": "introduction",
+      "title": "导论",
+      "questionIds": [
+        "q1",
+        "q2",
+        "q3",
+        "q31",
+        "q36"
+      ]
+    },
+    {
+      "id": "chapter-1",
+      "title": "第一章 新时代坚持和发展中国特色社会主义",
+      "questionIds": [
+        "q4",
+        "q5",
+        "q6",
+        "q32",
+        "q37"
+      ]
+    },
+    {
+      "id": "chapter-2",
+      "title": "第二章 以中国式现代化全面推进中华民族伟大复兴",
+      "questionIds": [
+        "q7",
+        "q8",
+        "q9",
+        "q33",
+        "q38"
+      ]
+    },
+    {
+      "id": "chapter-3-4",
+      "title": "第三至四章 党的领导与以人民为中心",
+      "questionIds": [
+        "q10",
+        "q11",
+        "q12",
+        "q34",
+        "q39"
+      ]
+    },
+    {
+      "id": "chapter-5-7",
+      "title": "第五至七章 改革、经济、教育科技人才",
+      "questionIds": [
+        "q13",
+        "q14",
+        "q15",
+        "q16",
+        "q35",
+        "q40"
+      ]
+    },
+    {
+      "id": "chapter-8-12",
+      "title": "第八至十二章 民主、法治、文化、民生、生态",
+      "questionIds": [
+        "q17",
+        "q18",
+        "q19",
+        "q20",
+        "q21",
+        "q22",
+        "q41",
+        "q42",
+        "q43"
+      ]
+    },
+    {
+      "id": "chapter-13-17",
+      "title": "第十三至十七章 国家安全、强军、统一、外交、从严治党",
+      "questionIds": [
+        "q23",
+        "q24",
+        "q25",
+        "q26",
+        "q27",
+        "q28",
+        "q29",
+        "q30",
+        "q44",
+        "q45"
+      ]
+    }
+  ],
+  "questions": [
+    {
+      "id": "q1",
+      "number": 1,
+      "sectionId": "introduction",
+      "type": "single_choice",
+      "prompt": "习近平新时代中国特色社会主义思想创立的民族层面时代背景是：",
+      "points": 1,
+      "difficulty": "easy",
+      "tags": [
+        "导论",
+        "时代背景"
+      ],
+      "source": {
+        "importType": "markdown",
+        "origin": "xi.md",
+        "chapter": "导论"
+      },
+      "options": [
+        {
+          "id": "A",
+          "label": "A",
+          "text": "世界百年未有之大变局加速演进"
+        },
+        {
+          "id": "B",
+          "label": "B",
+          "text": "中华民族伟大复兴进入关键时期"
+        },
+        {
+          "id": "C",
+          "label": "C",
+          "text": "中国式现代化全面推进拓展"
+        },
+        {
+          "id": "D",
+          "label": "D",
+          "text": "中国共产党自我革命开辟新的境界"
+        }
+      ],
+      "answer": {
+        "correctOptionIds": [
+          "B"
+        ]
+      },
+      "explanation": "xi.md 将“中华民族伟大复兴进入关键时期”标注为民族层面的时代背景。"
+    },
+    {
+      "id": "q2",
+      "number": 2,
+      "sectionId": "introduction",
+      "type": "single_choice",
+      "prompt": "“两个结合”不包括下列哪一项？",
+      "points": 1,
+      "difficulty": "easy",
+      "tags": [
+        "导论",
+        "两个结合"
+      ],
+      "source": {
+        "importType": "markdown",
+        "origin": "xi.md",
+        "chapter": "导论"
+      },
+      "options": [
+        {
+          "id": "A",
+          "label": "A",
+          "text": "马克思主义基本原理同中国具体实际相结合"
+        },
+        {
+          "id": "B",
+          "label": "B",
+          "text": "马克思主义基本原理同中华优秀传统文化相结合"
+        },
+        {
+          "id": "C",
+          "label": "C",
+          "text": "马克思主义基本原理同西方现代化理论相结合"
+        },
+        {
+          "id": "D",
+          "label": "D",
+          "text": "坚持和发展马克思主义的重要理论贡献"
+        }
+      ],
+      "answer": {
+        "correctOptionIds": [
+          "C"
+        ]
+      },
+      "explanation": "“两个结合”是同中国具体实际相结合、同中华优秀传统文化相结合。"
+    },
+    {
+      "id": "q3",
+      "number": 3,
+      "sectionId": "introduction",
+      "type": "single_choice",
+      "prompt": "党的二十大提出的“六个必须坚持”在习近平新时代中国特色社会主义思想中主要体现为：",
+      "points": 1,
+      "difficulty": "medium",
+      "tags": [
+        "导论",
+        "六个必须坚持"
+      ],
+      "source": {
+        "importType": "markdown",
+        "origin": "xi.md",
+        "chapter": "导论"
+      },
+      "options": [
+        {
+          "id": "A",
+          "label": "A",
+          "text": "主体内容和四梁八柱"
+        },
+        {
+          "id": "B",
+          "label": "B",
+          "text": "世界观、方法论和贯穿其中的立场观点方法"
+        },
+        {
+          "id": "C",
+          "label": "C",
+          "text": "党的组织路线的集中概括"
+        },
+        {
+          "id": "D",
+          "label": "D",
+          "text": "社会主义基本经济制度的新概括"
+        }
+      ],
+      "answer": {
+        "correctOptionIds": [
+          "B"
+        ]
+      },
+      "explanation": "xi.md 明确指出“六个必须坚持”是该思想的世界观、方法论和贯穿其中的立场观点方法的重要体现。"
+    },
+    {
+      "id": "q4",
+      "number": 4,
+      "sectionId": "chapter-1",
+      "type": "single_choice",
+      "prompt": "中国特色社会主义是社会主义而不是其他什么主义的根本原因是：",
+      "points": 1,
+      "difficulty": "easy",
+      "tags": [
+        "第一章",
+        "中国特色社会主义"
+      ],
+      "source": {
+        "importType": "markdown",
+        "origin": "xi.md",
+        "chapter": "第一章"
+      },
+      "options": [
+        {
+          "id": "A",
+          "label": "A",
+          "text": "坚持了科学社会主义基本原则"
+        },
+        {
+          "id": "B",
+          "label": "B",
+          "text": "照搬西方政治制度"
+        },
+        {
+          "id": "C",
+          "label": "C",
+          "text": "完全脱离中国基本国情"
+        },
+        {
+          "id": "D",
+          "label": "D",
+          "text": "只强调市场作用"
+        }
+      ],
+      "answer": {
+        "correctOptionIds": [
+          "A"
+        ]
+      },
+      "explanation": "xi.md 在第一章第 6 点中将“坚持了科学社会主义基本原则”标为根本原因。"
+    },
+    {
+      "id": "q5",
+      "number": 5,
+      "sectionId": "chapter-1",
+      "type": "single_choice",
+      "prompt": "“四个自信”中，被概括为“根本保障”的是：",
+      "points": 1,
+      "difficulty": "easy",
+      "tags": [
+        "第一章",
+        "四个自信"
+      ],
+      "source": {
+        "importType": "markdown",
+        "origin": "xi.md",
+        "chapter": "第一章"
+      },
+      "options": [
+        {
+          "id": "A",
+          "label": "A",
+          "text": "道路自信"
+        },
+        {
+          "id": "B",
+          "label": "B",
+          "text": "理论自信"
+        },
+        {
+          "id": "C",
+          "label": "C",
+          "text": "制度自信"
+        },
+        {
+          "id": "D",
+          "label": "D",
+          "text": "文化自信"
+        }
+      ],
+      "answer": {
+        "correctOptionIds": [
+          "C"
+        ]
+      },
+      "explanation": "xi.md 概括道路是实现途径、理论体系是行动指南、制度是根本保障、文化是精神力量。"
+    },
+    {
+      "id": "q6",
+      "number": 6,
+      "sectionId": "chapter-1",
+      "type": "single_choice",
+      "prompt": "新时代我国社会主要矛盾已经转化为：",
+      "points": 1,
+      "difficulty": "easy",
+      "tags": [
+        "第一章",
+        "社会主要矛盾"
+      ],
+      "source": {
+        "importType": "markdown",
+        "origin": "xi.md",
+        "chapter": "第一章"
+      },
+      "options": [
+        {
+          "id": "A",
+          "label": "A",
+          "text": "人民日益增长的物质文化需要同落后的社会生产之间的矛盾"
+        },
+        {
+          "id": "B",
+          "label": "B",
+          "text": "人民日益增长的美好生活需要和不平衡不充分的发展之间的矛盾"
+        },
+        {
+          "id": "C",
+          "label": "C",
+          "text": "生产力和生产关系之间的矛盾已经消失"
+        },
+        {
+          "id": "D",
+          "label": "D",
+          "text": "经济建设和政治建设之间的矛盾"
+        }
+      ],
+      "answer": {
+        "correctOptionIds": [
+          "B"
+        ]
+      },
+      "explanation": "xi.md 第一章“一变两不变”明确了新时代社会主要矛盾的新表述。"
+    },
+    {
+      "id": "q7",
+      "number": 7,
+      "sectionId": "chapter-2",
+      "type": "single_choice",
+      "prompt": "中国梦的本质是：",
+      "points": 1,
+      "difficulty": "easy",
+      "tags": [
+        "第二章",
+        "中国梦"
+      ],
+      "source": {
+        "importType": "markdown",
+        "origin": "xi.md",
+        "chapter": "第二章"
+      },
+      "options": [
+        {
+          "id": "A",
+          "label": "A",
+          "text": "国家富强、民族振兴、人民幸福"
+        },
+        {
+          "id": "B",
+          "label": "B",
+          "text": "经济增长、科技领先、军事扩张"
+        },
+        {
+          "id": "C",
+          "label": "C",
+          "text": "制度移植、文化同化、市场万能"
+        },
+        {
+          "id": "D",
+          "label": "D",
+          "text": "个人成功、区域竞争、资本积累"
+        }
+      ],
+      "answer": {
+        "correctOptionIds": [
+          "A"
+        ]
+      },
+      "explanation": "xi.md 第二章第 11 点写明中国梦本质是国家富强、民族振兴、人民幸福。"
+    },
+    {
+      "id": "q8",
+      "number": 8,
+      "sectionId": "chapter-2",
+      "type": "single_choice",
+      "prompt": "全面建成社会主义现代化强国总的战略安排第一步是：",
+      "points": 1,
+      "difficulty": "easy",
+      "tags": [
+        "第二章",
+        "两步走"
+      ],
+      "source": {
+        "importType": "markdown",
+        "origin": "xi.md",
+        "chapter": "第二章"
+      },
+      "options": [
+        {
+          "id": "A",
+          "label": "A",
+          "text": "从 2020 年到 2035 年基本实现社会主义现代化"
+        },
+        {
+          "id": "B",
+          "label": "B",
+          "text": "从 2035 年到本世纪中叶基本实现小康社会"
+        },
+        {
+          "id": "C",
+          "label": "C",
+          "text": "从 2020 年到本世纪中叶建成资本主义现代化国家"
+        },
+        {
+          "id": "D",
+          "label": "D",
+          "text": "从 2035 年到 2050 年完成新民主主义革命"
+        }
+      ],
+      "answer": {
+        "correctOptionIds": [
+          "A"
+        ]
+      },
+      "explanation": "xi.md 第二章概念总结和第 13 点都列出“两步走”的第一步。"
+    },
+    {
+      "id": "q9",
+      "number": 9,
+      "sectionId": "chapter-2",
+      "type": "single_choice",
+      "prompt": "中国式现代化区别于西方现代化的显著标志是：",
+      "points": 1,
+      "difficulty": "medium",
+      "tags": [
+        "第二章",
+        "中国式现代化"
+      ],
+      "source": {
+        "importType": "markdown",
+        "origin": "xi.md",
+        "chapter": "第二章"
+      },
+      "options": [
+        {
+          "id": "A",
+          "label": "A",
+          "text": "人口规模巨大的现代化"
+        },
+        {
+          "id": "B",
+          "label": "B",
+          "text": "全体人民共同富裕的现代化"
+        },
+        {
+          "id": "C",
+          "label": "C",
+          "text": "物质文明和精神文明相协调的现代化"
+        },
+        {
+          "id": "D",
+          "label": "D",
+          "text": "走和平发展道路的现代化"
+        }
+      ],
+      "answer": {
+        "correctOptionIds": [
+          "B"
+        ]
+      },
+      "explanation": "xi.md 第 15 点明确“全体人民共同富裕的现代化”是区别于西方现代化的显著标志。"
+    },
+    {
+      "id": "q10",
+      "number": 10,
+      "sectionId": "chapter-3-4",
+      "type": "single_choice",
+      "prompt": "中国特色社会主义最本质的特征是：",
+      "points": 1,
+      "difficulty": "easy",
+      "tags": [
+        "第三章",
+        "党的领导"
+      ],
+      "source": {
+        "importType": "markdown",
+        "origin": "xi.md",
+        "chapter": "第三章"
+      },
+      "options": [
+        {
+          "id": "A",
+          "label": "A",
+          "text": "中国共产党领导"
+        },
+        {
+          "id": "B",
+          "label": "B",
+          "text": "多党轮流执政"
+        },
+        {
+          "id": "C",
+          "label": "C",
+          "text": "完全市场化"
+        },
+        {
+          "id": "D",
+          "label": "D",
+          "text": "地方自治优先"
+        }
+      ],
+      "answer": {
+        "correctOptionIds": [
+          "A"
+        ]
+      },
+      "explanation": "xi.md 第三章第 21 点和导论“十个明确”均强调中国共产党领导是最本质的特征。"
+    },
+    {
+      "id": "q11",
+      "number": 11,
+      "sectionId": "chapter-3-4",
+      "type": "single_choice",
+      "prompt": "党的领导的最高原则是：",
+      "points": 1,
+      "difficulty": "medium",
+      "tags": [
+        "第三章",
+        "党中央权威"
+      ],
+      "source": {
+        "importType": "markdown",
+        "origin": "xi.md",
+        "chapter": "第三章"
+      },
+      "options": [
+        {
+          "id": "A",
+          "label": "A",
+          "text": "党中央集中统一领导"
+        },
+        {
+          "id": "B",
+          "label": "B",
+          "text": "基层组织自行决策"
+        },
+        {
+          "id": "C",
+          "label": "C",
+          "text": "区域利益优先"
+        },
+        {
+          "id": "D",
+          "label": "D",
+          "text": "行政效率优先"
+        }
+      ],
+      "answer": {
+        "correctOptionIds": [
+          "A"
+        ]
+      },
+      "explanation": "xi.md 第 24 点指出党中央集中统一领导是党的领导的最高原则。"
+    },
+    {
+      "id": "q12",
+      "number": 12,
+      "sectionId": "chapter-3-4",
+      "type": "single_choice",
+      "prompt": "马克思主义的本质属性和鲜明品格是：",
+      "points": 1,
+      "difficulty": "easy",
+      "tags": [
+        "第四章",
+        "人民性"
+      ],
+      "source": {
+        "importType": "markdown",
+        "origin": "xi.md",
+        "chapter": "第四章"
+      },
+      "options": [
+        {
+          "id": "A",
+          "label": "A",
+          "text": "人民性"
+        },
+        {
+          "id": "B",
+          "label": "B",
+          "text": "封闭性"
+        },
+        {
+          "id": "C",
+          "label": "C",
+          "text": "功利性"
+        },
+        {
+          "id": "D",
+          "label": "D",
+          "text": "自发性"
+        }
+      ],
+      "answer": {
+        "correctOptionIds": [
+          "A"
+        ]
+      },
+      "explanation": "xi.md 第四章开头写明人民性是马克思主义的本质属性和鲜明品格。"
+    },
+    {
+      "id": "q13",
+      "number": 13,
+      "sectionId": "chapter-5-7",
+      "type": "single_choice",
+      "prompt": "全面深化改革总目标是：",
+      "points": 1,
+      "difficulty": "medium",
+      "tags": [
+        "第五章",
+        "全面深化改革"
+      ],
+      "source": {
+        "importType": "markdown",
+        "origin": "xi.md",
+        "chapter": "第五章"
+      },
+      "options": [
+        {
+          "id": "A",
+          "label": "A",
+          "text": "完善和发展中国特色社会主义制度、推进国家治理体系和治理能力现代化"
+        },
+        {
+          "id": "B",
+          "label": "B",
+          "text": "建设中国特色社会主义法治体系、建设社会主义法治国家"
+        },
+        {
+          "id": "C",
+          "label": "C",
+          "text": "建成世界一流军队"
+        },
+        {
+          "id": "D",
+          "label": "D",
+          "text": "构建人类命运共同体"
+        }
+      ],
+      "answer": {
+        "correctOptionIds": [
+          "A"
+        ]
+      },
+      "explanation": "xi.md 导论“十个明确”和前言重点都列出全面深化改革总目标。"
+    },
+    {
+      "id": "q14",
+      "number": 14,
+      "sectionId": "chapter-5-7",
+      "type": "single_choice",
+      "prompt": "新发展理念中被概括为“第一动力”的是：",
+      "points": 1,
+      "difficulty": "easy",
+      "tags": [
+        "第六章",
+        "新发展理念"
+      ],
+      "source": {
+        "importType": "markdown",
+        "origin": "xi.md",
+        "chapter": "第六章"
+      },
+      "options": [
+        {
+          "id": "A",
+          "label": "A",
+          "text": "创新"
+        },
+        {
+          "id": "B",
+          "label": "B",
+          "text": "协调"
+        },
+        {
+          "id": "C",
+          "label": "C",
+          "text": "绿色"
+        },
+        {
+          "id": "D",
+          "label": "D",
+          "text": "共享"
+        }
+      ],
+      "answer": {
+        "correctOptionIds": [
+          "A"
+        ]
+      },
+      "explanation": "xi.md 第 39 点表述高质量发展时指出创新成为第一动力。"
+    },
+    {
+      "id": "q15",
+      "number": 15,
+      "sectionId": "chapter-5-7",
+      "type": "single_choice",
+      "prompt": "构建高水平社会主义市场经济体制，关键是处理好：",
+      "points": 1,
+      "difficulty": "medium",
+      "tags": [
+        "第六章",
+        "社会主义市场经济"
+      ],
+      "source": {
+        "importType": "markdown",
+        "origin": "xi.md",
+        "chapter": "第六章"
+      },
+      "options": [
+        {
+          "id": "A",
+          "label": "A",
+          "text": "政府和市场的关系"
+        },
+        {
+          "id": "B",
+          "label": "B",
+          "text": "城市和乡村的关系"
+        },
+        {
+          "id": "C",
+          "label": "C",
+          "text": "国内和国外的关系"
+        },
+        {
+          "id": "D",
+          "label": "D",
+          "text": "传统和现代的关系"
+        }
+      ],
+      "answer": {
+        "correctOptionIds": [
+          "A"
+        ]
+      },
+      "explanation": "xi.md 第 44 点明确关键是处理好政府和市场的关系。"
+    },
+    {
+      "id": "q16",
+      "number": 16,
+      "sectionId": "chapter-5-7",
+      "type": "single_choice",
+      "prompt": "全面建设社会主义现代化国家，教育、科技、人才的关系是：",
+      "points": 1,
+      "difficulty": "medium",
+      "tags": [
+        "第七章",
+        "教育科技人才"
+      ],
+      "source": {
+        "importType": "markdown",
+        "origin": "xi.md",
+        "chapter": "第七章"
+      },
+      "options": [
+        {
+          "id": "A",
+          "label": "A",
+          "text": "教育是根本，科技是关键，人才是基础"
+        },
+        {
+          "id": "B",
+          "label": "B",
+          "text": "教育是关键，科技是基础，人才是根本"
+        },
+        {
+          "id": "C",
+          "label": "C",
+          "text": "教育是基础，科技是根本，人才是关键"
+        },
+        {
+          "id": "D",
+          "label": "D",
+          "text": "教育、科技、人才互不相关"
+        }
+      ],
+      "answer": {
+        "correctOptionIds": [
+          "A"
+        ]
+      },
+      "explanation": "xi.md 第 47 点明确教育是根本、科技是关键、人才是基础。"
+    },
+    {
+      "id": "q17",
+      "number": 17,
+      "sectionId": "chapter-8-12",
+      "type": "single_choice",
+      "prompt": "中国特色社会主义政治发展道路必须坚持的有机统一是：",
+      "points": 1,
+      "difficulty": "medium",
+      "tags": [
+        "第八章",
+        "政治发展道路"
+      ],
+      "source": {
+        "importType": "markdown",
+        "origin": "xi.md",
+        "chapter": "第八章"
+      },
+      "options": [
+        {
+          "id": "A",
+          "label": "A",
+          "text": "党的领导、人民当家作主、依法治国"
+        },
+        {
+          "id": "B",
+          "label": "B",
+          "text": "经济增长、社会竞争、资本流动"
+        },
+        {
+          "id": "C",
+          "label": "C",
+          "text": "地方自治、行业自律、市场调节"
+        },
+        {
+          "id": "D",
+          "label": "D",
+          "text": "传统治理、精英治理、技术治理"
+        }
+      ],
+      "answer": {
+        "correctOptionIds": [
+          "A"
+        ]
+      },
+      "explanation": "xi.md 第 54 点明确必须坚持党的领导、人民当家作主、依法治国有机统一。"
+    },
+    {
+      "id": "q18",
+      "number": 18,
+      "sectionId": "chapter-8-12",
+      "type": "single_choice",
+      "prompt": "社会主义民主政治的本质属性是：",
+      "points": 1,
+      "difficulty": "easy",
+      "tags": [
+        "第八章",
+        "全过程人民民主"
+      ],
+      "source": {
+        "importType": "markdown",
+        "origin": "xi.md",
+        "chapter": "第八章"
+      },
+      "options": [
+        {
+          "id": "A",
+          "label": "A",
+          "text": "全过程人民民主"
+        },
+        {
+          "id": "B",
+          "label": "B",
+          "text": "少数人民主"
+        },
+        {
+          "id": "C",
+          "label": "C",
+          "text": "形式民主"
+        },
+        {
+          "id": "D",
+          "label": "D",
+          "text": "程序替代实体"
+        }
+      ],
+      "answer": {
+        "correctOptionIds": [
+          "A"
+        ]
+      },
+      "explanation": "xi.md 第 55 点标题即为“全过程人民民主是社会主义民主政治的本质属性”。"
+    },
+    {
+      "id": "q19",
+      "number": 19,
+      "sectionId": "chapter-8-12",
+      "type": "single_choice",
+      "prompt": "全面推进依法治国的总目标是：",
+      "points": 1,
+      "difficulty": "medium",
+      "tags": [
+        "第九章",
+        "依法治国"
+      ],
+      "source": {
+        "importType": "markdown",
+        "origin": "xi.md",
+        "chapter": "第九章"
+      },
+      "options": [
+        {
+          "id": "A",
+          "label": "A",
+          "text": "建设中国特色社会主义法治体系、建设社会主义法治国家"
+        },
+        {
+          "id": "B",
+          "label": "B",
+          "text": "完善和发展中国特色社会主义制度、推进国家治理体系和治理能力现代化"
+        },
+        {
+          "id": "C",
+          "label": "C",
+          "text": "构建高水平社会主义市场经济体制"
+        },
+        {
+          "id": "D",
+          "label": "D",
+          "text": "加快建设教育强国"
+        }
+      ],
+      "answer": {
+        "correctOptionIds": [
+          "A"
+        ]
+      },
+      "explanation": "xi.md 第 59 点列出全面推进依法治国的总目标。"
+    },
+    {
+      "id": "q20",
+      "number": 20,
+      "sectionId": "chapter-8-12",
+      "type": "single_choice",
+      "prompt": "国家的根本法、治国安邦的总章程是：",
+      "points": 1,
+      "difficulty": "easy",
+      "tags": [
+        "第九章",
+        "宪法"
+      ],
+      "source": {
+        "importType": "markdown",
+        "origin": "xi.md",
+        "chapter": "第九章"
+      },
+      "options": [
+        {
+          "id": "A",
+          "label": "A",
+          "text": "宪法"
+        },
+        {
+          "id": "B",
+          "label": "B",
+          "text": "民法典"
+        },
+        {
+          "id": "C",
+          "label": "C",
+          "text": "行政法规"
+        },
+        {
+          "id": "D",
+          "label": "D",
+          "text": "地方性法规"
+        }
+      ],
+      "answer": {
+        "correctOptionIds": [
+          "A"
+        ]
+      },
+      "explanation": "xi.md 第 60 点明确宪法是国家的根本法，是治国安邦的总章程。"
+    },
+    {
+      "id": "q21",
+      "number": 21,
+      "sectionId": "chapter-8-12",
+      "type": "single_choice",
+      "prompt": "意识形态关乎旗帜、关乎道路、关乎：",
+      "points": 1,
+      "difficulty": "easy",
+      "tags": [
+        "第十章",
+        "意识形态"
+      ],
+      "source": {
+        "importType": "markdown",
+        "origin": "xi.md",
+        "chapter": "第十章"
+      },
+      "options": [
+        {
+          "id": "A",
+          "label": "A",
+          "text": "国家政治安全"
+        },
+        {
+          "id": "B",
+          "label": "B",
+          "text": "个人消费偏好"
+        },
+        {
+          "id": "C",
+          "label": "C",
+          "text": "区域天气变化"
+        },
+        {
+          "id": "D",
+          "label": "D",
+          "text": "企业营销方式"
+        }
+      ],
+      "answer": {
+        "correctOptionIds": [
+          "A"
+        ]
+      },
+      "explanation": "xi.md 第 64 点指出意识形态关乎旗帜、道路、国家政治安全。"
+    },
+    {
+      "id": "q22",
+      "number": 22,
+      "sectionId": "chapter-8-12",
+      "type": "single_choice",
+      "prompt": "民生在人民幸福中的定位是：",
+      "points": 1,
+      "difficulty": "easy",
+      "tags": [
+        "第十一章",
+        "民生"
+      ],
+      "source": {
+        "importType": "markdown",
+        "origin": "xi.md",
+        "chapter": "第十一章"
+      },
+      "options": [
+        {
+          "id": "A",
+          "label": "A",
+          "text": "人民幸福之基"
+        },
+        {
+          "id": "B",
+          "label": "B",
+          "text": "国家竞争之末"
+        },
+        {
+          "id": "C",
+          "label": "C",
+          "text": "市场选择之余"
+        },
+        {
+          "id": "D",
+          "label": "D",
+          "text": "文化娱乐之源"
+        }
+      ],
+      "answer": {
+        "correctOptionIds": [
+          "A"
+        ]
+      },
+      "explanation": "xi.md 第 67 点中“民生是人民幸福之基”。"
+    },
+    {
+      "id": "q23",
+      "number": 23,
+      "sectionId": "chapter-13-17",
+      "type": "single_choice",
+      "prompt": "新时代国家安全工作的基本遵循是：",
+      "points": 1,
+      "difficulty": "medium",
+      "tags": [
+        "第十三章",
+        "国家安全"
+      ],
+      "source": {
+        "importType": "markdown",
+        "origin": "xi.md",
+        "chapter": "第十三章"
+      },
+      "options": [
+        {
+          "id": "A",
+          "label": "A",
+          "text": "总体国家安全观"
+        },
+        {
+          "id": "B",
+          "label": "B",
+          "text": "单一军事安全观"
+        },
+        {
+          "id": "C",
+          "label": "C",
+          "text": "经济利益唯一观"
+        },
+        {
+          "id": "D",
+          "label": "D",
+          "text": "地方安全优先观"
+        }
+      ],
+      "answer": {
+        "correctOptionIds": [
+          "A"
+        ]
+      },
+      "explanation": "xi.md 第十三章开头明确总体国家安全观是新时代国家安全工作的基本遵循。"
+    },
+    {
+      "id": "q24",
+      "number": 24,
+      "sectionId": "chapter-13-17",
+      "type": "single_choice",
+      "prompt": "总体国家安全观以什么为宗旨？",
+      "points": 1,
+      "difficulty": "easy",
+      "tags": [
+        "第十三章",
+        "国家安全"
+      ],
+      "source": {
+        "importType": "markdown",
+        "origin": "xi.md",
+        "chapter": "第十三章"
+      },
+      "options": [
+        {
+          "id": "A",
+          "label": "A",
+          "text": "人民安全"
+        },
+        {
+          "id": "B",
+          "label": "B",
+          "text": "政治安全"
+        },
+        {
+          "id": "C",
+          "label": "C",
+          "text": "经济安全"
+        },
+        {
+          "id": "D",
+          "label": "D",
+          "text": "军事安全"
+        }
+      ],
+      "answer": {
+        "correctOptionIds": [
+          "A"
+        ]
+      },
+      "explanation": "xi.md 第十三章表述为以人民安全为宗旨。"
+    },
+    {
+      "id": "q25",
+      "number": 25,
+      "sectionId": "chapter-13-17",
+      "type": "single_choice",
+      "prompt": "党在新时代的强军目标是建设一支怎样的人民军队？",
+      "points": 1,
+      "difficulty": "easy",
+      "tags": [
+        "第十四章",
+        "强军目标"
+      ],
+      "source": {
+        "importType": "markdown",
+        "origin": "xi.md",
+        "chapter": "第十四章"
+      },
+      "options": [
+        {
+          "id": "A",
+          "label": "A",
+          "text": "听党指挥、能打胜仗、作风优良"
+        },
+        {
+          "id": "B",
+          "label": "B",
+          "text": "规模最大、装备最多、海外优先"
+        },
+        {
+          "id": "C",
+          "label": "C",
+          "text": "市场运作、企业管理、自负盈亏"
+        },
+        {
+          "id": "D",
+          "label": "D",
+          "text": "地方领导、行业协调、社会自治"
+        }
+      ],
+      "answer": {
+        "correctOptionIds": [
+          "A"
+        ]
+      },
+      "explanation": "xi.md 第十四章直接列出新时代强军目标的三项表述。"
+    },
+    {
+      "id": "q26",
+      "number": 26,
+      "sectionId": "chapter-13-17",
+      "type": "single_choice",
+      "prompt": "全面贯彻新时代党解决台湾问题的总体方略，统一的根本保证是：",
+      "points": 1,
+      "difficulty": "medium",
+      "tags": [
+        "第十五章",
+        "祖国统一"
+      ],
+      "source": {
+        "importType": "markdown",
+        "origin": "xi.md",
+        "chapter": "第十五章"
+      },
+      "options": [
+        {
+          "id": "A",
+          "label": "A",
+          "text": "坚持党中央对对台工作的集中统一领导"
+        },
+        {
+          "id": "B",
+          "label": "B",
+          "text": "坚持外部力量主导"
+        },
+        {
+          "id": "C",
+          "label": "C",
+          "text": "坚持放弃一个中国原则"
+        },
+        {
+          "id": "D",
+          "label": "D",
+          "text": "坚持拒绝两岸交流"
+        }
+      ],
+      "answer": {
+        "correctOptionIds": [
+          "A"
+        ]
+      },
+      "explanation": "xi.md 第十五章将党中央对对台工作的集中统一领导标为统一的根本保证。"
+    },
+    {
+      "id": "q27",
+      "number": 27,
+      "sectionId": "chapter-13-17",
+      "type": "single_choice",
+      "prompt": "祖国统一的政治基础是：",
+      "points": 1,
+      "difficulty": "medium",
+      "tags": [
+        "第十五章",
+        "祖国统一"
+      ],
+      "source": {
+        "importType": "markdown",
+        "origin": "xi.md",
+        "chapter": "第十五章"
+      },
+      "options": [
+        {
+          "id": "A",
+          "label": "A",
+          "text": "坚持一个中国原则和“九二共识”"
+        },
+        {
+          "id": "B",
+          "label": "B",
+          "text": "坚持外部势力干涉"
+        },
+        {
+          "id": "C",
+          "label": "C",
+          "text": "坚持分裂图谋"
+        },
+        {
+          "id": "D",
+          "label": "D",
+          "text": "坚持脱离中华民族伟大复兴进程"
+        }
+      ],
+      "answer": {
+        "correctOptionIds": [
+          "A"
+        ]
+      },
+      "explanation": "xi.md 第十五章明确一个中国原则和“九二共识”是统一的政治基础。"
+    },
+    {
+      "id": "q28",
+      "number": 28,
+      "sectionId": "chapter-13-17",
+      "type": "single_choice",
+      "prompt": "中国特色大国外交要推动构建：",
+      "points": 1,
+      "difficulty": "easy",
+      "tags": [
+        "第十六章",
+        "外交"
+      ],
+      "source": {
+        "importType": "markdown",
+        "origin": "xi.md",
+        "chapter": "第十六章"
+      },
+      "options": [
+        {
+          "id": "A",
+          "label": "A",
+          "text": "人类命运共同体"
+        },
+        {
+          "id": "B",
+          "label": "B",
+          "text": "封闭型国际体系"
+        },
+        {
+          "id": "C",
+          "label": "C",
+          "text": "单边霸权秩序"
+        },
+        {
+          "id": "D",
+          "label": "D",
+          "text": "区域排他联盟"
+        }
+      ],
+      "answer": {
+        "correctOptionIds": [
+          "A"
+        ]
+      },
+      "explanation": "xi.md 导论“十个明确”列明中国特色大国外交推动构建人类命运共同体。"
+    },
+    {
+      "id": "q29",
+      "number": 29,
+      "sectionId": "chapter-13-17",
+      "type": "single_choice",
+      "prompt": "深入推进党的建设，应以什么建设为统领？",
+      "points": 1,
+      "difficulty": "easy",
+      "tags": [
+        "第十七章",
+        "党的建设"
+      ],
+      "source": {
+        "importType": "markdown",
+        "origin": "xi.md",
+        "chapter": "第十七章"
+      },
+      "options": [
+        {
+          "id": "A",
+          "label": "A",
+          "text": "政治建设"
+        },
+        {
+          "id": "B",
+          "label": "B",
+          "text": "经济建设"
+        },
+        {
+          "id": "C",
+          "label": "C",
+          "text": "文化建设"
+        },
+        {
+          "id": "D",
+          "label": "D",
+          "text": "生态建设"
+        }
+      ],
+      "answer": {
+        "correctOptionIds": [
+          "A"
+        ]
+      },
+      "explanation": "xi.md 第十七章开头写明以政治建设为统领深入推进党的建设。"
+    },
+    {
+      "id": "q30",
+      "number": 30,
+      "sectionId": "chapter-13-17",
+      "type": "single_choice",
+      "prompt": "我们党跳出历史周期率的答案包括人民监督政府和：",
+      "points": 1,
+      "difficulty": "medium",
+      "tags": [
+        "第十七章",
+        "自我革命"
+      ],
+      "source": {
+        "importType": "markdown",
+        "origin": "xi.md",
+        "chapter": "第十七章"
+      },
+      "options": [
+        {
+          "id": "A",
+          "label": "A",
+          "text": "勇于自我革命"
+        },
+        {
+          "id": "B",
+          "label": "B",
+          "text": "回避监督"
+        },
+        {
+          "id": "C",
+          "label": "C",
+          "text": "放松治党"
+        },
+        {
+          "id": "D",
+          "label": "D",
+          "text": "削弱组织"
+        }
+      ],
+      "answer": {
+        "correctOptionIds": [
+          "A"
+        ]
+      },
+      "explanation": "xi.md 第十七章指出让人民来监督政府、勇于自我革命，是党跳出历史周期率的答案。"
+    },
+    {
+      "id": "q31",
+      "number": 31,
+      "sectionId": "introduction",
+      "type": "multiple_choice",
+      "prompt": "下列属于“六个必须坚持”的有：",
+      "points": 2,
+      "difficulty": "easy",
+      "tags": [
+        "导论",
+        "六个必须坚持"
+      ],
+      "source": {
+        "importType": "markdown",
+        "origin": "xi.md",
+        "chapter": "导论"
+      },
+      "options": [
+        {
+          "id": "A",
+          "label": "A",
+          "text": "人民至上"
+        },
+        {
+          "id": "B",
+          "label": "B",
+          "text": "自信自立"
+        },
+        {
+          "id": "C",
+          "label": "C",
+          "text": "守正创新"
+        },
+        {
+          "id": "D",
+          "label": "D",
+          "text": "胸怀天下"
+        }
+      ],
+      "answer": {
+        "correctOptionIds": [
+          "A",
+          "B",
+          "C",
+          "D"
+        ]
+      },
+      "explanation": "xi.md 前言概念总结列出六个必须坚持：人民至上、自信自立、守正创新、问题导向、系统观念、胸怀天下。"
+    },
+    {
+      "id": "q32",
+      "number": 32,
+      "sectionId": "chapter-1",
+      "type": "multiple_choice",
+      "prompt": "下列属于“四个自信”的有：",
+      "points": 2,
+      "difficulty": "easy",
+      "tags": [
+        "第一章",
+        "四个自信"
+      ],
+      "source": {
+        "importType": "markdown",
+        "origin": "xi.md",
+        "chapter": "第一章"
+      },
+      "options": [
+        {
+          "id": "A",
+          "label": "A",
+          "text": "道路自信"
+        },
+        {
+          "id": "B",
+          "label": "B",
+          "text": "理论自信"
+        },
+        {
+          "id": "C",
+          "label": "C",
+          "text": "制度自信"
+        },
+        {
+          "id": "D",
+          "label": "D",
+          "text": "文化自信"
+        }
+      ],
+      "answer": {
+        "correctOptionIds": [
+          "A",
+          "B",
+          "C",
+          "D"
+        ]
+      },
+      "explanation": "xi.md 前言概念总结和第一章第 7 点均列出道路、理论、制度、文化自信。"
+    },
+    {
+      "id": "q33",
+      "number": 33,
+      "sectionId": "chapter-2",
+      "type": "multiple_choice",
+      "prompt": "下列属于中国式现代化中国特色的有：",
+      "points": 2,
+      "difficulty": "medium",
+      "tags": [
+        "第二章",
+        "中国式现代化"
+      ],
+      "source": {
+        "importType": "markdown",
+        "origin": "xi.md",
+        "chapter": "第二章"
+      },
+      "options": [
+        {
+          "id": "A",
+          "label": "A",
+          "text": "人口规模巨大的现代化"
+        },
+        {
+          "id": "B",
+          "label": "B",
+          "text": "全体人民共同富裕的现代化"
+        },
+        {
+          "id": "C",
+          "label": "C",
+          "text": "人与自然和谐共生的现代化"
+        },
+        {
+          "id": "D",
+          "label": "D",
+          "text": "走和平发展道路的现代化"
+        }
+      ],
+      "answer": {
+        "correctOptionIds": [
+          "A",
+          "B",
+          "C",
+          "D"
+        ]
+      },
+      "explanation": "xi.md 第 15 点列出中国式现代化的五个中国特色；本题四项均属于其中内容。"
+    },
+    {
+      "id": "q34",
+      "number": 34,
+      "sectionId": "chapter-3-4",
+      "type": "multiple_choice",
+      "prompt": "全面落实以人民为中心的发展思想包括：",
+      "points": 2,
+      "difficulty": "medium",
+      "tags": [
+        "第四章",
+        "以人民为中心"
+      ],
+      "source": {
+        "importType": "markdown",
+        "origin": "xi.md",
+        "chapter": "第四章"
+      },
+      "options": [
+        {
+          "id": "A",
+          "label": "A",
+          "text": "坚持和贯彻党的群众路线"
+        },
+        {
+          "id": "B",
+          "label": "B",
+          "text": "把为人民造福的事情真正办好办实"
+        },
+        {
+          "id": "C",
+          "label": "C",
+          "text": "推动全体人民共同富裕取得更为明显的实质性进展"
+        },
+        {
+          "id": "D",
+          "label": "D",
+          "text": "脱离人民群众推进治理"
+        }
+      ],
+      "answer": {
+        "correctOptionIds": [
+          "A",
+          "B",
+          "C"
+        ]
+      },
+      "explanation": "xi.md 第 29 点列出三项内容，D 与以人民为中心相反。"
+    },
+    {
+      "id": "q35",
+      "number": 35,
+      "sectionId": "chapter-5-7",
+      "type": "multiple_choice",
+      "prompt": "下列关于教育、科技、人才战略的表述正确的有：",
+      "points": 2,
+      "difficulty": "medium",
+      "tags": [
+        "第七章",
+        "教育科技人才"
+      ],
+      "source": {
+        "importType": "markdown",
+        "origin": "xi.md",
+        "chapter": "第七章"
+      },
+      "options": [
+        {
+          "id": "A",
+          "label": "A",
+          "text": "科技是第一生产力"
+        },
+        {
+          "id": "B",
+          "label": "B",
+          "text": "人才是第一资源"
+        },
+        {
+          "id": "C",
+          "label": "C",
+          "text": "创新是第一动力"
+        },
+        {
+          "id": "D",
+          "label": "D",
+          "text": "教育、科技、人才不是战略支撑"
+        }
+      ],
+      "answer": {
+        "correctOptionIds": [
+          "A",
+          "B",
+          "C"
+        ]
+      },
+      "explanation": "xi.md 第七章概念总结和第 47 点强调科技是第一生产力、人才是第一资源、创新是第一动力。"
+    },
+    {
+      "id": "q36",
+      "number": 36,
+      "sectionId": "introduction",
+      "type": "true_false",
+      "prompt": "“十个明确”是习近平新时代中国特色社会主义思想的主体内容，发挥着统摄作用。",
+      "points": 1,
+      "difficulty": "easy",
+      "tags": [
+        "导论",
+        "十个明确"
+      ],
+      "source": {
+        "importType": "markdown",
+        "origin": "xi.md",
+        "chapter": "导论"
+      },
+      "options": [
+        {
+          "id": "A",
+          "label": "正确",
+          "text": "正确"
+        },
+        {
+          "id": "B",
+          "label": "错误",
+          "text": "错误"
+        }
+      ],
+      "answer": {
+        "correctOptionIds": [
+          "A"
+        ]
+      },
+      "explanation": "xi.md 导论明确“十个明确”是主体内容，构成四梁八柱，发挥统摄作用。"
+    },
+    {
+      "id": "q37",
+      "number": 37,
+      "sectionId": "chapter-1",
+      "type": "true_false",
+      "prompt": "我国长期处于社会主义初级阶段的基本国情已经发生根本改变。",
+      "points": 1,
+      "difficulty": "easy",
+      "tags": [
+        "第一章",
+        "一变两不变"
+      ],
+      "source": {
+        "importType": "markdown",
+        "origin": "xi.md",
+        "chapter": "第一章"
+      },
+      "options": [
+        {
+          "id": "A",
+          "label": "正确",
+          "text": "正确"
+        },
+        {
+          "id": "B",
+          "label": "错误",
+          "text": "错误"
+        }
+      ],
+      "answer": {
+        "correctOptionIds": [
+          "B"
+        ]
+      },
+      "explanation": "xi.md 第 9 点指出基本国情没有变，我国是世界最大发展中国家的国际地位没有变。"
+    },
+    {
+      "id": "q38",
+      "number": 38,
+      "sectionId": "chapter-2",
+      "type": "true_false",
+      "prompt": "中国式现代化是走和平发展道路的现代化。",
+      "points": 1,
+      "difficulty": "easy",
+      "tags": [
+        "第二章",
+        "中国式现代化"
+      ],
+      "source": {
+        "importType": "markdown",
+        "origin": "xi.md",
+        "chapter": "第二章"
+      },
+      "options": [
+        {
+          "id": "A",
+          "label": "正确",
+          "text": "正确"
+        },
+        {
+          "id": "B",
+          "label": "错误",
+          "text": "错误"
+        }
+      ],
+      "answer": {
+        "correctOptionIds": [
+          "A"
+        ]
+      },
+      "explanation": "xi.md 第 15 点将走和平发展道路的现代化列为中国式现代化的中国特色之一。"
+    },
+    {
+      "id": "q39",
+      "number": 39,
+      "sectionId": "chapter-3-4",
+      "type": "true_false",
+      "prompt": "人民立场是中国共产党的根本政治立场。",
+      "points": 1,
+      "difficulty": "easy",
+      "tags": [
+        "第四章",
+        "人民立场"
+      ],
+      "source": {
+        "importType": "markdown",
+        "origin": "xi.md",
+        "chapter": "第四章"
+      },
+      "options": [
+        {
+          "id": "A",
+          "label": "正确",
+          "text": "正确"
+        },
+        {
+          "id": "B",
+          "label": "错误",
+          "text": "错误"
+        }
+      ],
+      "answer": {
+        "correctOptionIds": [
+          "A"
+        ]
+      },
+      "explanation": "xi.md 第 27 点标题即为“人民立场是中国共产党的根本政治立场”。"
+    },
+    {
+      "id": "q40",
+      "number": 40,
+      "sectionId": "chapter-5-7",
+      "type": "true_false",
+      "prompt": "公有制经济和非公有制经济都是社会主义市场经济的重要组成部分。",
+      "points": 1,
+      "difficulty": "easy",
+      "tags": [
+        "第六章",
+        "基本经济制度"
+      ],
+      "source": {
+        "importType": "markdown",
+        "origin": "xi.md",
+        "chapter": "第六章"
+      },
+      "options": [
+        {
+          "id": "A",
+          "label": "正确",
+          "text": "正确"
+        },
+        {
+          "id": "B",
+          "label": "错误",
+          "text": "错误"
+        }
+      ],
+      "answer": {
+        "correctOptionIds": [
+          "A"
+        ]
+      },
+      "explanation": "xi.md 第 42 点明确二者都是社会主义市场经济的重要组成部分和我国经济社会发展的重要基础。"
+    },
+    {
+      "id": "q41",
+      "number": 41,
+      "sectionId": "chapter-8-12",
+      "type": "true_false",
+      "prompt": "中国特色社会主义法治体系本质上是中国特色社会主义制度的法律表现形式。",
+      "points": 1,
+      "difficulty": "medium",
+      "tags": [
+        "第九章",
+        "法治体系"
+      ],
+      "source": {
+        "importType": "markdown",
+        "origin": "xi.md",
+        "chapter": "第九章"
+      },
+      "options": [
+        {
+          "id": "A",
+          "label": "正确",
+          "text": "正确"
+        },
+        {
+          "id": "B",
+          "label": "错误",
+          "text": "错误"
+        }
+      ],
+      "answer": {
+        "correctOptionIds": [
+          "A"
+        ]
+      },
+      "explanation": "xi.md 第 59 点明确中国特色社会主义法治体系本质上是中国特色社会主义制度的法律表现形式。"
+    },
+    {
+      "id": "q42",
+      "number": 42,
+      "sectionId": "chapter-8-12",
+      "type": "true_false",
+      "prompt": "文化软实力是一国综合国力的重要组成部分和重要衡量标准。",
+      "points": 1,
+      "difficulty": "easy",
+      "tags": [
+        "第十章",
+        "文化软实力"
+      ],
+      "source": {
+        "importType": "markdown",
+        "origin": "xi.md",
+        "chapter": "第十章"
+      },
+      "options": [
+        {
+          "id": "A",
+          "label": "正确",
+          "text": "正确"
+        },
+        {
+          "id": "B",
+          "label": "错误",
+          "text": "错误"
+        }
+      ],
+      "answer": {
+        "correctOptionIds": [
+          "A"
+        ]
+      },
+      "explanation": "xi.md 第 66 点括注指出文化软实力是一国综合国力的重要组成部分和重要衡量标准。"
+    },
+    {
+      "id": "q43",
+      "number": 43,
+      "sectionId": "chapter-8-12",
+      "type": "true_false",
+      "prompt": "生态兴则文明兴。",
+      "points": 1,
+      "difficulty": "easy",
+      "tags": [
+        "第十二章",
+        "生态文明"
+      ],
+      "source": {
+        "importType": "markdown",
+        "origin": "xi.md",
+        "chapter": "第十二章"
+      },
+      "options": [
+        {
+          "id": "A",
+          "label": "正确",
+          "text": "正确"
+        },
+        {
+          "id": "B",
+          "label": "错误",
+          "text": "错误"
+        }
+      ],
+      "answer": {
+        "correctOptionIds": [
+          "A"
+        ]
+      },
+      "explanation": "xi.md 第 70 点列出“生态兴则文明兴”。"
+    },
+    {
+      "id": "q44",
+      "number": 44,
+      "sectionId": "chapter-13-17",
+      "type": "true_false",
+      "prompt": "总体国家安全观以政治安全为根本。",
+      "points": 1,
+      "difficulty": "easy",
+      "tags": [
+        "第十三章",
+        "国家安全"
+      ],
+      "source": {
+        "importType": "markdown",
+        "origin": "xi.md",
+        "chapter": "第十三章"
+      },
+      "options": [
+        {
+          "id": "A",
+          "label": "正确",
+          "text": "正确"
+        },
+        {
+          "id": "B",
+          "label": "错误",
+          "text": "错误"
+        }
+      ],
+      "answer": {
+        "correctOptionIds": [
+          "A"
+        ]
+      },
+      "explanation": "xi.md 第十三章表述总体国家安全观以人民安全为宗旨，以政治安全为根本。"
+    },
+    {
+      "id": "q45",
+      "number": 45,
+      "sectionId": "chapter-13-17",
+      "type": "true_false",
+      "prompt": "新时代党解决台湾问题的总体方略主张承诺放弃使用武力。",
+      "points": 1,
+      "difficulty": "medium",
+      "tags": [
+        "第十五章",
+        "祖国统一"
+      ],
+      "source": {
+        "importType": "markdown",
+        "origin": "xi.md",
+        "chapter": "第十五章"
+      },
+      "options": [
+        {
+          "id": "A",
+          "label": "正确",
+          "text": "正确"
+        },
+        {
+          "id": "B",
+          "label": "错误",
+          "text": "错误"
+        }
+      ],
+      "answer": {
+        "correctOptionIds": [
+          "B"
+        ]
+      },
+      "explanation": "xi.md 第十五章写明“坚持决不承诺放弃使用武力”，因此题干说法错误。"
+    }
+  ]
+}
