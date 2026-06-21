@@ -18,6 +18,7 @@ import { useMemo, useState } from 'react';
 import { availableCounts, buildQuestionPool, defaultFilters, emptyCounts, pickRandomQuestions, questionTypes, statuses, type QuizFilters, type TypeCounts } from './domain/picker';
 import { getStatus, markQuestion, progressKey } from './domain/progress';
 import type { AppBackup, ProgressStatus, Question, QuestionProgress, QuestionType, QuizBank } from './domain/quizTypes';
+import { FormulaText } from './components/FormulaText';
 import { useDbData } from './hooks/useDbData';
 import { downloadJson, isAppBackup, parseJsonFile, validateQuizBank } from './importExport/bankValidation';
 import { db, defaultSettings, exportBackup, removeBank, restoreBackup } from './storage/db';
@@ -328,7 +329,7 @@ function WrongQuestionsModal({
             {wrongQuestions.map(({ question, progress }) => (
               <article className="wrong-item" key={question.id}>
                 <p className="question-number">#{question.number} · {labels[question.type]} · {question.difficulty ?? 'unspecified'}</p>
-                <h3>{question.prompt}</h3>
+                <h3><FormulaText text={question.prompt} /></h3>
                 <div className="review-options">
                   {question.options.map((option) => {
                     const isUserAnswer = progress.latestSelectedOptionIds.includes(option.id);
@@ -336,14 +337,14 @@ function WrongQuestionsModal({
                     return (
                       <div className={`review-option ${isCorrect ? 'correct' : ''} ${isUserAnswer && !isCorrect ? 'wrong' : ''} ${isUserAnswer ? 'selected' : ''}`} key={option.id}>
                         <span className="option-label">{option.label}</span>
-                        <span>{option.text}</span>
+                        <span><FormulaText text={option.text} /></span>
                       </div>
                     );
                   })}
                 </div>
                 <AnswerLine label="Your answer" ids={progress.latestSelectedOptionIds} question={question} tone="bad" />
                 <AnswerLine label="Correct answer" ids={progress.latestCorrectOptionIds} question={question} tone="good" />
-                {question.explanation && <p className="explanation">{question.explanation}</p>}
+                {question.explanation && <p className="explanation"><FormulaText text={question.explanation} /></p>}
               </article>
             ))}
           </div>
@@ -364,16 +365,17 @@ function AnswerLine({
   question: Question;
   tone: 'good' | 'bad';
 }) {
-  const text = ids.length
-    ? ids.map((id) => {
-      const option = question.options.find((item) => item.id === id);
-      return option ? `${option.label}: ${option.text}` : id;
-    }).join('; ')
-    : 'No answer';
+  const options = ids.map((id) => question.options.find((item) => item.id === id));
 
   return (
     <p className={`answer-line ${tone}`}>
-      <strong>{label}:</strong> {text}
+      <strong>{label}:</strong>{' '}
+      {ids.length === 0 ? 'No answer' : options.map((option, index) => (
+        <span key={`${option?.id ?? ids[index]}-${index}`}>
+          {index > 0 ? '; ' : ''}
+          {option ? <><span>{option.label}: </span><FormulaText text={option.text} /></> : ids[index]}
+        </span>
+      ))}
     </p>
   );
 }
@@ -561,8 +563,8 @@ function QuizRunner({
       </div>
       <article className="question-card">
         <p className="question-number">#{question.number}</p>
-        <h2>{question.prompt}</h2>
-        {question.stem && <p className="stem">{question.stem}</p>}
+        <h2><FormulaText text={question.prompt} /></h2>
+        {question.stem && <p className="stem"><FormulaText text={question.stem} /></p>}
         <div className="options">
           {options.map((option) => {
             const isSelected = selected.includes(option.id);
@@ -572,7 +574,7 @@ function QuizRunner({
               <label key={option.id} className={`option ${isSelected ? 'selected' : ''} ${isCorrect ? 'correct' : ''} ${isWrongSelection ? 'wrong' : ''}`}>
                 <input type={question.type === 'multiple_choice' ? 'checkbox' : 'radio'} name={question.id} checked={isSelected} onChange={() => setSelected(option.id)} />
                 <span className="option-label">{option.label}</span>
-                <span>{option.text}</span>
+                <span><FormulaText text={option.text} /></span>
               </label>
             );
           })}
@@ -582,7 +584,7 @@ function QuizRunner({
             <strong>{marked.status === 'correct' ? 'Correct' : 'Wrong'}</strong>
             <p>Your answer: {marked.latestSelectedOptionIds.join(', ') || 'No answer'}</p>
             <p>Correct answer: {marked.latestCorrectOptionIds.join(', ')}</p>
-            {question.explanation && <p>{question.explanation}</p>}
+            {question.explanation && <p><FormulaText text={question.explanation} /></p>}
           </div>
         )}
       </article>
@@ -671,8 +673,8 @@ function AllQuestionsQuiz({
           return (
             <article className="question-card stacked" key={question.id}>
               <p className="question-number">Question {questionIndex + 1} · #{question.number} · {labels[question.type]} · {question.difficulty ?? 'unspecified'}</p>
-              <h2>{question.prompt}</h2>
-              {question.stem && <p className="stem">{question.stem}</p>}
+              <h2><FormulaText text={question.prompt} /></h2>
+              {question.stem && <p className="stem"><FormulaText text={question.stem} /></p>}
               <div className="options">
                 {options.map((option) => {
                   const isSelected = selected.includes(option.id);
@@ -682,7 +684,7 @@ function AllQuestionsQuiz({
                     <label key={option.id} className={`option ${isSelected ? 'selected' : ''} ${isCorrect ? 'correct' : ''} ${isWrongSelection ? 'wrong' : ''}`}>
                       <input type={question.type === 'multiple_choice' ? 'checkbox' : 'radio'} name={question.id} checked={isSelected} onChange={() => setSelected(question, option.id)} />
                       <span className="option-label">{option.label}</span>
-                      <span>{option.text}</span>
+                      <span><FormulaText text={option.text} /></span>
                     </label>
                   );
                 })}
@@ -692,7 +694,7 @@ function AllQuestionsQuiz({
                   <strong>{marked.status === 'correct' ? 'Correct' : 'Wrong'}</strong>
                   <p>Your answer: {marked.latestSelectedOptionIds.join(', ') || 'No answer'}</p>
                   <p>Correct answer: {marked.latestCorrectOptionIds.join(', ')}</p>
-                  {question.explanation && <p>{question.explanation}</p>}
+                  {question.explanation && <p><FormulaText text={question.explanation} /></p>}
                 </div>
               )}
             </article>

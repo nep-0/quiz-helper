@@ -27,7 +27,11 @@ description: Create one or more JSON question banks from conversation context, n
    - Support only `single_choice`, `multiple_choice`, and `true_false`.
    - Use option IDs matching `^[A-Z]$`; keep `label` and `text` non-empty.
    - Store correct answers in `answer.correctOptionIds`.
-   - Add `sections`, `difficulty`, `tags`, `source`, and `explanation` when inferable.
+   - Preserve mathematical formulas as LaTeX wrapped in dollar signs, for example `$x^2 + y^2 = z^2$`.
+   - Add `sections`, `difficulty`, `tags`, and `source` when inferable.
+   - Write full, self-contained `explanation` text for each question whenever the source supports it.
+   - Explain why the correct answer is correct, and for multiple choice or plausible distractors explain why incorrect options are not correct when useful.
+   - Do not use explanations that only point back to material, such as "see the textbook", "according to the source", "refer to chapter 3", or page/section citations without the actual reasoning.
 
 5. Validate before finalizing.
    - If working in a repo with Node tooling, use an existing validator if present.

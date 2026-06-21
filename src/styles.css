@@ -469,6 +469,16 @@ input[type="file"] {
   margin-bottom: 0;
 }
 
+.formula {
+  overflow-wrap: anywhere;
+}
+
+.formula-block {
+  display: block;
+  overflow-x: auto;
+  padding: 8px 0;
+}
+
 .stem {
   padding: 12px;
   border-left: 4px solid #8eb6a9;

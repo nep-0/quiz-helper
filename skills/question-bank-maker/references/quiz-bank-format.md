@@ -28,9 +28,19 @@ Optional top-level fields: `description`, `subject`, `tags`, `sections`.
 - Optional question fields: `sectionId`, `stem`, `points`, `difficulty`, `tags`, `source`, `explanation`.
 - `difficulty` must be `easy`, `medium`, or `hard`.
 - `source` may contain `importType`, `origin`, and `chapter`.
+- `explanation` should be a full, self-contained explanation of the answer, not a pointer back to the source material.
 - `answer.correctOptionIds` contains one or more option IDs.
 - For `true_false`, use exactly two options.
 - Option IDs and answer IDs must be single uppercase letters such as `A`, `B`, `C`, `D`.
+- Mathematical formulas may appear in `prompt`, `stem`, option `text`, and `explanation`; write them as LaTeX wrapped with dollar signs, such as `$E = mc^2$`.
+
+## Explanation Quality
+
+- Prefer one to three sentences that directly explain the rule, concept, calculation, or fact needed to answer.
+- For single choice and true/false, explain why the selected correct option is correct.
+- For multiple choice, explain the common criterion that makes all correct options correct; mention excluded distractors when that prevents ambiguity.
+- Do not write explanations that merely say "see source material", "refer to the notes", "from chapter X", "as stated above", or only provide a page/section citation.
+- Keep source citations in `source`, not as a substitute for `explanation`.
 
 ## Compact Example
 
@@ -61,18 +71,18 @@ Optional top-level fields: `description`, `subject`, `tags`, `sections`.
       "number": 1,
       "sectionId": "basics",
       "type": "single_choice",
-      "prompt": "Which process do plants use to make food from sunlight?",
+      "prompt": "Which expression equals $2^3$?",
       "points": 1,
       "difficulty": "easy",
-      "tags": ["plants"],
+      "tags": ["exponents"],
       "options": [
-        { "id": "A", "label": "A", "text": "Photosynthesis" },
-        { "id": "B", "label": "B", "text": "Evaporation" },
-        { "id": "C", "label": "C", "text": "Condensation" },
-        { "id": "D", "label": "D", "text": "Erosion" }
+        { "id": "A", "label": "A", "text": "$2 \\times 2 \\times 2$" },
+        { "id": "B", "label": "B", "text": "$2 + 3$" },
+        { "id": "C", "label": "C", "text": "$3^2$" },
+        { "id": "D", "label": "D", "text": "$2 \\times 3$" }
       ],
       "answer": { "correctOptionIds": ["A"] },
-      "explanation": "Photosynthesis converts light energy into chemical energy stored as food."
+      "explanation": "$2^3$ means multiplying three factors of 2."
     },
     {
       "id": "q2",
