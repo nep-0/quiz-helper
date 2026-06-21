@@ -14,7 +14,7 @@ import {
   Upload,
   X
 } from 'lucide-react';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { availableCounts, buildQuestionPool, defaultFilters, emptyCounts, pickRandomQuestions, questionTypes, statuses, type QuizFilters, type TypeCounts } from './domain/picker';
 import { getStatus, markQuestion, progressKey } from './domain/progress';
 import type { AppBackup, ProgressStatus, Question, QuestionProgress, QuestionType, QuizBank } from './domain/quizTypes';
@@ -398,7 +398,8 @@ function PracticeBuilder({
   showAllQuestions: boolean;
 }) {
   const [filters, setFilters] = useState<QuizFilters>(defaultFilters);
-  const [counts, setCounts] = useState<TypeCounts>({ single_choice: 5, multiple_choice: 3, true_false: 5 });
+  const [counts, setCounts] = useState<TypeCounts>(emptyCounts);
+  const countsEdited = useRef(false);
   const pool = useMemo(() => buildQuestionPool(bank, progressByKey, filters), [bank, filters, progressByKey]);
   const available = availableCounts(pool);
   const totalRequested = questionTypes.reduce((sum, type) => sum + counts[type], 0);
@@ -408,6 +409,12 @@ function PracticeBuilder({
   const tags = unique(bank.questions.flatMap((question) => question.tags ?? []));
   const chapters = unique(bank.questions.map((question) => question.source?.chapter).filter(Boolean));
   const origins = unique(bank.questions.map((question) => question.source?.origin).filter(Boolean));
+
+  useEffect(() => {
+    if (!countsEdited.current) {
+      setCounts({ ...available });
+    }
+  }, [available.single_choice, available.multiple_choice, available.true_false]);
 
   const startQuiz = () => {
     if (!canStart) {
@@ -454,12 +461,13 @@ function PracticeBuilder({
           {questionTypes.map((type) => (
             <label className="count-row" key={type}>
               <span>{labels[type]}</span>
-              <input type="number" min={0} max={available[type]} value={counts[type]} onChange={(event) => setCounts({ ...counts, [type]: Number(event.target.value) })} />
+              <input type="number" min={0} max={available[type]} value={counts[type]} onChange={(event) => { countsEdited.current = true; setCounts({ ...counts, [type]: Number(event.target.value) }); }} />
               <small>{available[type]} available</small>
             </label>
           ))}
+          <button className="secondary" onClick={() => { countsEdited.current = false; setCounts({ ...available }); }}><Check size={18} /> Max available</button>
           <button className="primary" disabled={!canStart} onClick={startQuiz}><Play size={18} /> Start Practice</button>
-          <button className="secondary" onClick={() => { setFilters(defaultFilters()); setCounts(emptyCounts()); }}><RotateCcw size={18} /> Reset</button>
+          <button className="secondary" onClick={() => { countsEdited.current = false; setFilters(defaultFilters()); }}><RotateCcw size={18} /> Reset</button>
         </div>
       </div>
     </section>
