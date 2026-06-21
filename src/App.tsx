@@ -431,6 +431,7 @@ function PracticeBuilder({
       createdAt: new Date().toISOString(),
       showAllQuestions
     });
+    window.requestAnimationFrame(() => window.scrollTo({ top: 0, behavior: 'smooth' }));
   };
 
   return (
