@@ -576,7 +576,7 @@ function PracticeBuilder({
           <div className="action-row">
             <button className="primary" disabled={!canStart} onClick={startQuiz}><Play size={18} /> Start</button>
             {activeSession && (
-              <button className="primary accent" onClick={() => void resumeSession()}><RotateCcw size={18} /> Continue</button>
+              <button className="primary btn-accent" onClick={() => void resumeSession()}><RotateCcw size={18} /> Continue</button>
             )}
           </div>
           <button className="secondary" onClick={() => { countsEdited.current = false; setFilters(defaultFilters()); }}><RotateCcw size={18} /> Reset</button>
