@@ -404,6 +404,22 @@ h3 {
   gap: 12px;
 }
 
+.action-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.action-row button {
+  flex: 1 1 0;
+  min-width: 140px;
+}
+
+.accent {
+  color: #ffffff;
+  background: #4a9385;
+}
+
 .count-row {
   display: grid;
   grid-template-columns: 1fr 88px;

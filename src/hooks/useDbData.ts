@@ -1,12 +1,13 @@
 import { useEffect, useState } from 'react';
 import { db, defaultSettings, ensureSeedData } from '../storage/db';
-import type { AppSettings, QuestionProgress, QuizBank, QuizSession } from '../domain/quizTypes';
+import type { ActiveSessionState, AppSettings, QuestionProgress, QuizBank, QuizSession } from '../domain/quizTypes';
 
 export interface AppData {
   banks: QuizBank[];
   progress: QuestionProgress[];
   sessions: QuizSession[];
   settings: AppSettings;
+  activeSession?: ActiveSessionState;
 }
 
 export const useDbData = () => {
@@ -24,14 +25,15 @@ export const useDbData = () => {
     const load = async () => {
       setLoading(true);
       await ensureSeedData();
-      const [banks, progress, sessions, settings] = await Promise.all([
+      const [banks, progress, sessions, settings, activeSession] = await Promise.all([
         db.banks.toArray(),
         db.progress.toArray(),
         db.sessions.toArray(),
-        db.settings.get('settings')
+        db.settings.get('settings'),
+        db.activeSession.get('current')
       ]);
       if (!cancelled) {
-        setData({ banks, progress, sessions, settings: { ...defaultSettings, ...(settings ?? {}) } });
+        setData({ banks, progress, sessions, settings: { ...defaultSettings, ...(settings ?? {}) }, activeSession });
         setLoading(false);
       }
     };

@@ -17,11 +17,11 @@ import {
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { availableCounts, buildQuestionPool, defaultFilters, emptyCounts, pickRandomQuestions, questionTypes, shuffle, statuses, type QuizFilters, type TypeCounts } from './domain/picker';
 import { getStatus, markQuestion, progressKey } from './domain/progress';
-import type { AppBackup, ProgressStatus, Question, QuestionProgress, QuestionType, QuizBank } from './domain/quizTypes';
+import type { ActiveSessionState, AppBackup, ProgressStatus, Question, QuestionProgress, QuestionType, QuizBank, QuizMode } from './domain/quizTypes';
 import { FormulaText } from './components/FormulaText';
 import { useDbData } from './hooks/useDbData';
 import { downloadJson, isAppBackup, parseJsonFile, validateQuizBank } from './importExport/bankValidation';
-import { db, defaultSettings, exportBackup, removeBank, restoreBackup } from './storage/db';
+import { clearActiveSession, db, defaultSettings, exportBackup, removeBank, restoreBackup, saveActiveSession } from './storage/db';
 
 type View = 'banks' | 'practice' | 'data';
 
@@ -35,6 +35,7 @@ interface ActiveQuiz {
   sessionId: string;
   createdAt: string;
   showAllQuestions: boolean;
+  mode: QuizMode;
 }
 
 const labels: Record<QuestionType, string> = {
@@ -75,6 +76,55 @@ function App() {
 
   const selectedBank = data.banks.find((bank) => bank.bankId === selectedBankId) ?? data.banks[0];
   const progressByKey = useMemo(() => new Map(data.progress.map((item) => [item.key, item])), [data.progress]);
+
+  useEffect(() => {
+    if (!quiz) return;
+    void saveActiveSession({
+      id: 'current',
+      sessionId: quiz.sessionId,
+      bankId: quiz.bank.bankId,
+      questionIds: quiz.questions.map((item) => item.id),
+      index: quiz.index,
+      selected: quiz.selected,
+      marked: quiz.marked,
+      optionOrderByQuestion: quiz.optionOrderByQuestion,
+      createdAt: quiz.createdAt,
+      showAllQuestions: quiz.showAllQuestions,
+      mode: quiz.mode
+    });
+  }, [quiz]);
+
+  const resumeSession = async () => {
+    const state = data.activeSession;
+    if (!state) return;
+    const bank = data.banks.find((item) => item.bankId === state.bankId);
+    if (!bank) {
+      await clearActiveSession();
+      refresh();
+      notify('Saved session no longer exists; cleared.');
+      return;
+    }
+    const questionMap = new Map(bank.questions.map((item) => [item.id, item]));
+    const questions = state.questionIds.map((id) => questionMap.get(id)).filter((item): item is Question => Boolean(item));
+    if (questions.length === 0) {
+      await clearActiveSession();
+      refresh();
+      return;
+    }
+    setQuiz({
+      bank,
+      questions,
+      index: Math.min(state.index, questions.length - 1),
+      selected: state.selected,
+      marked: state.marked,
+      optionOrderByQuestion: state.optionOrderByQuestion,
+      sessionId: state.sessionId,
+      createdAt: state.createdAt,
+      showAllQuestions: state.showAllQuestions,
+      mode: state.mode
+    });
+    window.requestAnimationFrame(() => window.scrollTo({ top: 0, behavior: 'smooth' }));
+  };
 
   const notify = (text: string) => {
     setMessage(text);
@@ -200,6 +250,8 @@ function App() {
               notify={notify}
               showAllQuestions={data.settings.showAllQuestions}
               preserveOptionOrder={data.settings.preserveOptionOrder}
+              activeSession={data.activeSession}
+              resumeSession={resumeSession}
             />
           )}
           {view === 'data' && (
@@ -422,7 +474,9 @@ function PracticeBuilder({
   setQuiz,
   notify,
   showAllQuestions,
-  preserveOptionOrder
+  preserveOptionOrder,
+  activeSession,
+  resumeSession
 }: {
   bank: QuizBank;
   banks: QuizBank[];
@@ -432,9 +486,12 @@ function PracticeBuilder({
   notify: (text: string) => void;
   showAllQuestions: boolean;
   preserveOptionOrder: boolean;
+  activeSession?: ActiveSessionState;
+  resumeSession: () => Promise<void>;
 }) {
   const [filters, setFilters] = useState<QuizFilters>(defaultFilters);
   const [counts, setCounts] = useState<TypeCounts>(emptyCounts);
+  const [mode, setMode] = useState<QuizMode>('standard');
   const countsEdited = useRef(false);
   const pool = useMemo(() => buildQuestionPool(bank, progressByKey, filters), [bank, filters, progressByKey]);
   const available = availableCounts(pool);
@@ -457,6 +514,9 @@ function PracticeBuilder({
       notify('Adjust counts to match the available filtered questions.');
       return;
     }
+    if (activeSession && !window.confirm('Discard the unfinished practice session and start a new one?')) {
+      return;
+    }
     const questions = pickRandomQuestions(pool, counts);
     setQuiz({
       bank,
@@ -467,7 +527,8 @@ function PracticeBuilder({
       optionOrderByQuestion: buildOptionOrderByQuestion(questions, preserveOptionOrder),
       sessionId: crypto.randomUUID(),
       createdAt: new Date().toISOString(),
-      showAllQuestions
+      showAllQuestions,
+      mode
     });
     window.requestAnimationFrame(() => window.scrollTo({ top: 0, behavior: 'smooth' }));
   };
@@ -497,6 +558,13 @@ function PracticeBuilder({
 
         <div className="count-block">
           <h3><Play size={18} /> Question Counts</h3>
+          <fieldset className="check-group">
+            <legend>Mode</legend>
+            <div>
+              <label><input type="radio" checked={mode === 'standard'} onChange={() => setMode('standard')} /><span>Standard (mark manually)</span></label>
+              <label><input type="radio" checked={mode === 'instant'} onChange={() => setMode('instant')} /><span>Instant (reveal on answer)</span></label>
+            </div>
+          </fieldset>
           {questionTypes.map((type) => (
             <label className="count-row" key={type}>
               <span>{labels[type]}</span>
@@ -505,7 +573,12 @@ function PracticeBuilder({
             </label>
           ))}
           <button className="secondary" onClick={() => { countsEdited.current = false; setCounts({ ...available }); }}><Check size={18} /> Max available</button>
-          <button className="primary" disabled={!canStart} onClick={startQuiz}><Play size={18} /> Start Practice</button>
+          <div className="action-row">
+            <button className="primary" disabled={!canStart} onClick={startQuiz}><Play size={18} /> Start</button>
+            {activeSession && (
+              <button className="primary accent" onClick={() => void resumeSession()}><RotateCcw size={18} /> Continue</button>
+            )}
+          </div>
           <button className="secondary" onClick={() => { countsEdited.current = false; setFilters(defaultFilters()); }}><RotateCcw size={18} /> Reset</button>
         </div>
       </div>
@@ -547,6 +620,22 @@ function CheckboxGroup<T extends string>({
   );
 }
 
+const finishSession = async (quiz: ActiveQuiz, setQuiz: (quiz: ActiveQuiz | null) => void, refresh: () => void) => {
+  const markedItems = Object.values(quiz.marked);
+  await db.sessions.put({
+    id: quiz.sessionId,
+    bankId: quiz.bank.bankId,
+    questionIds: quiz.questions.map((item) => item.id),
+    createdAt: quiz.createdAt,
+    completedAt: new Date().toISOString(),
+    correctCount: markedItems.filter((item) => item.status === 'correct').length,
+    wrongCount: markedItems.filter((item) => item.status === 'wrong').length
+  });
+  await clearActiveSession();
+  refresh();
+  setQuiz(null);
+};
+
 function QuizRunner({
   quiz,
   setQuiz,
@@ -558,10 +647,27 @@ function QuizRunner({
   refresh: () => void;
   progressByKey: Map<string, QuestionProgress>;
 }) {
-  if (quiz.showAllQuestions) {
-    return <AllQuestionsQuiz quiz={quiz} setQuiz={setQuiz} refresh={refresh} progressByKey={progressByKey} />;
+  if (quiz.mode === 'instant') {
+    return quiz.showAllQuestions
+      ? <InstantAllQuestionsQuiz quiz={quiz} setQuiz={setQuiz} refresh={refresh} progressByKey={progressByKey} />
+      : <InstantQuizRunner quiz={quiz} setQuiz={setQuiz} refresh={refresh} progressByKey={progressByKey} />;
   }
+  return quiz.showAllQuestions
+    ? <AllQuestionsQuiz quiz={quiz} setQuiz={setQuiz} refresh={refresh} progressByKey={progressByKey} />
+    : <StandardQuizRunner quiz={quiz} setQuiz={setQuiz} refresh={refresh} progressByKey={progressByKey} />;
+}
 
+function StandardQuizRunner({
+  quiz,
+  setQuiz,
+  refresh,
+  progressByKey
+}: {
+  quiz: ActiveQuiz;
+  setQuiz: (quiz: ActiveQuiz | null) => void;
+  refresh: () => void;
+  progressByKey: Map<string, QuestionProgress>;
+}) {
   const question = quiz.questions[quiz.index];
   const selected = quiz.selected[question.id] ?? [];
   const marked = quiz.marked[question.id];
@@ -583,21 +689,6 @@ function QuizRunner({
     await db.progress.put(nextProgress);
     setQuiz({ ...quiz, marked: { ...quiz.marked, [question.id]: nextProgress } });
     refresh();
-  };
-
-  const finish = async () => {
-    const markedItems = Object.values(quiz.marked);
-    await db.sessions.put({
-      id: quiz.sessionId,
-      bankId: quiz.bank.bankId,
-      questionIds: quiz.questions.map((item) => item.id),
-      createdAt: quiz.createdAt,
-      completedAt: new Date().toISOString(),
-      correctCount: markedItems.filter((item) => item.status === 'correct').length,
-      wrongCount: markedItems.filter((item) => item.status === 'wrong').length
-    });
-    refresh();
-    setQuiz(null);
   };
 
   return (
@@ -641,8 +732,193 @@ function QuizRunner({
         {quiz.index < quiz.questions.length - 1 ? (
           <button className="secondary" onClick={() => setQuiz({ ...quiz, index: quiz.index + 1 })}>Next</button>
         ) : (
-          <button className="primary" onClick={() => void finish()}>Finish</button>
+          <button className="primary" onClick={() => void finishSession(quiz, setQuiz, refresh)}>Finish</button>
         )}
+      </div>
+    </section>
+  );
+}
+
+function InstantQuizRunner({
+  quiz,
+  setQuiz,
+  refresh,
+  progressByKey
+}: {
+  quiz: ActiveQuiz;
+  setQuiz: (quiz: ActiveQuiz | null) => void;
+  refresh: () => void;
+  progressByKey: Map<string, QuestionProgress>;
+}) {
+  const question = quiz.questions[quiz.index];
+  const selected = quiz.selected[question.id] ?? [];
+  const marked = quiz.marked[question.id];
+  const isMultiple = question.type === 'multiple_choice';
+  const options = useMemo(
+    () => orderedOptions(question, quiz.optionOrderByQuestion[question.id]),
+    [question, quiz.optionOrderByQuestion]
+  );
+
+  const markNow = async (selectedIds: string[]) => {
+    const nextProgress = markQuestion(quiz.bank.bankId, question, selectedIds, progressByKey.get(progressKey(quiz.bank.bankId, question.id)));
+    await db.progress.put(nextProgress);
+    setQuiz({ ...quiz, selected: { ...quiz.selected, [question.id]: selectedIds }, marked: { ...quiz.marked, [question.id]: nextProgress } });
+    refresh();
+  };
+
+  const setSelected = (optionId: string) => {
+    if (marked) return;
+    if (isMultiple) {
+      const next = selected.includes(optionId) ? selected.filter((id) => id !== optionId) : [...selected, optionId];
+      setQuiz({ ...quiz, selected: { ...quiz.selected, [question.id]: next } });
+    } else {
+      void markNow([optionId]);
+    }
+  };
+
+  const submitMultiple = () => {
+    if (marked || selected.length === 0) return;
+    void markNow(selected);
+  };
+
+  return (
+    <section className="panel quiz-panel">
+      <div className="quiz-header">
+        <button className="icon-button" onClick={() => setQuiz(null)}><ArrowLeft size={18} /> Exit</button>
+        <div>
+          <strong>Question {quiz.index + 1} of {quiz.questions.length}</strong>
+          <span>{labels[question.type]} · {question.difficulty ?? 'unspecified'} · Instant</span>
+        </div>
+      </div>
+      <article className="question-card">
+        <p className="question-number">#{question.number}</p>
+        <h2><FormulaText text={question.prompt} /></h2>
+        {question.stem && <p className="stem"><FormulaText text={question.stem} /></p>}
+        <div className="options">
+          {options.map((option) => {
+            const isSelected = selected.includes(option.id);
+            const isCorrect = marked?.latestCorrectOptionIds.includes(option.id);
+            const isWrongSelection = marked && isSelected && !isCorrect;
+            return (
+              <label key={option.id} className={`option ${isSelected ? 'selected' : ''} ${isCorrect ? 'correct' : ''} ${isWrongSelection ? 'wrong' : ''}`}>
+                <input type={isMultiple ? 'checkbox' : 'radio'} name={question.id} checked={isSelected} onChange={() => setSelected(option.id)} disabled={Boolean(marked)} />
+                <span><FormulaText text={option.text} /></span>
+              </label>
+            );
+          })}
+        </div>
+        {marked && (
+          <div className={`result ${marked.status}`}>
+            <strong>{marked.status === 'correct' ? 'Correct' : 'Wrong'}</strong>
+            <AnswerSummary label="Your answer" ids={marked.latestSelectedOptionIds} question={question} />
+            <AnswerSummary label="Correct answer" ids={marked.latestCorrectOptionIds} question={question} />
+            {question.explanation && <p><FormulaText text={question.explanation} /></p>}
+          </div>
+        )}
+      </article>
+      <div className="quiz-actions">
+        <button className="secondary" disabled={quiz.index === 0} onClick={() => setQuiz({ ...quiz, index: quiz.index - 1 })}>Previous</button>
+        {isMultiple && !marked && (
+          <button className="primary" disabled={selected.length === 0} onClick={submitMultiple}><Check size={18} /> Submit</button>
+        )}
+        {quiz.index < quiz.questions.length - 1 ? (
+          <button className="secondary" disabled={!marked} onClick={() => setQuiz({ ...quiz, index: quiz.index + 1 })}>Next</button>
+        ) : (
+          <button className="primary" disabled={!marked} onClick={() => void finishSession(quiz, setQuiz, refresh)}>Finish</button>
+        )}
+      </div>
+    </section>
+  );
+}
+
+function InstantAllQuestionsQuiz({
+  quiz,
+  setQuiz,
+  refresh,
+  progressByKey
+}: {
+  quiz: ActiveQuiz;
+  setQuiz: (quiz: ActiveQuiz | null) => void;
+  refresh: () => void;
+  progressByKey: Map<string, QuestionProgress>;
+}) {
+  const allMarked = quiz.questions.every((question) => Boolean(quiz.marked[question.id]));
+
+  const markOne = async (question: Question, selectedIds: string[]) => {
+    const nextProgress = markQuestion(quiz.bank.bankId, question, selectedIds, progressByKey.get(progressKey(quiz.bank.bankId, question.id)));
+    await db.progress.put(nextProgress);
+    setQuiz({ ...quiz, selected: { ...quiz.selected, [question.id]: selectedIds }, marked: { ...quiz.marked, [question.id]: nextProgress } });
+    refresh();
+  };
+
+  const setSelected = (question: Question, optionId: string) => {
+    if (quiz.marked[question.id]) return;
+    const current = quiz.selected[question.id] ?? [];
+    if (question.type === 'multiple_choice') {
+      const next = current.includes(optionId) ? current.filter((id) => id !== optionId) : [...current, optionId];
+      setQuiz({ ...quiz, selected: { ...quiz.selected, [question.id]: next } });
+    } else {
+      void markOne(question, [optionId]);
+    }
+  };
+
+  const submitMultiple = (question: Question) => {
+    if (quiz.marked[question.id]) return;
+    const current = quiz.selected[question.id] ?? [];
+    if (current.length === 0) return;
+    void markOne(question, current);
+  };
+
+  return (
+    <section className="panel quiz-panel all-questions">
+      <div className="quiz-header">
+        <button className="icon-button" onClick={() => setQuiz(null)}><ArrowLeft size={18} /> Exit</button>
+        <div>
+          <strong>{quiz.questions.length} questions</strong>
+          <span>Instant mode</span>
+        </div>
+      </div>
+      <div className="question-stack">
+        {quiz.questions.map((question, questionIndex) => {
+          const selected = quiz.selected[question.id] ?? [];
+          const marked = quiz.marked[question.id];
+          const options = orderedOptions(question, quiz.optionOrderByQuestion[question.id]);
+          const isMultiple = question.type === 'multiple_choice';
+          return (
+            <article className="question-card stacked" key={question.id}>
+              <p className="question-number">Question {questionIndex + 1} · #{question.number} · {labels[question.type]} · {question.difficulty ?? 'unspecified'}</p>
+              <h2><FormulaText text={question.prompt} /></h2>
+              {question.stem && <p className="stem"><FormulaText text={question.stem} /></p>}
+              <div className="options">
+                {options.map((option) => {
+                  const isSelected = selected.includes(option.id);
+                  const isCorrect = marked?.latestCorrectOptionIds.includes(option.id);
+                  const isWrongSelection = marked && isSelected && !isCorrect;
+                  return (
+                    <label key={option.id} className={`option ${isSelected ? 'selected' : ''} ${isCorrect ? 'correct' : ''} ${isWrongSelection ? 'wrong' : ''}`}>
+                      <input type={isMultiple ? 'checkbox' : 'radio'} name={question.id} checked={isSelected} onChange={() => setSelected(question, option.id)} disabled={Boolean(marked)} />
+                      <span><FormulaText text={option.text} /></span>
+                    </label>
+                  );
+                })}
+              </div>
+              {isMultiple && !marked && (
+                <button className="primary" disabled={selected.length === 0} onClick={() => submitMultiple(question)}><Check size={18} /> Submit</button>
+              )}
+              {marked && (
+                <div className={`result ${marked.status}`}>
+                  <strong>{marked.status === 'correct' ? 'Correct' : 'Wrong'}</strong>
+                  <AnswerSummary label="Your answer" ids={marked.latestSelectedOptionIds} question={question} />
+                  <AnswerSummary label="Correct answer" ids={marked.latestCorrectOptionIds} question={question} />
+                  {question.explanation && <p><FormulaText text={question.explanation} /></p>}
+                </div>
+              )}
+            </article>
+          );
+        })}
+      </div>
+      <div className="quiz-actions">
+        <button className="primary" disabled={!allMarked} onClick={() => void finishSession(quiz, setQuiz, refresh)}>Finish</button>
       </div>
     </section>
   );
@@ -684,21 +960,6 @@ function AllQuestionsQuiz({
     await db.progress.bulkPut(Object.values(nextMarked));
     setQuiz({ ...quiz, marked: nextMarked });
     refresh();
-  };
-
-  const finish = async () => {
-    const markedItems = Object.values(quiz.marked);
-    await db.sessions.put({
-      id: quiz.sessionId,
-      bankId: quiz.bank.bankId,
-      questionIds: quiz.questions.map((item) => item.id),
-      createdAt: quiz.createdAt,
-      completedAt: new Date().toISOString(),
-      correctCount: markedItems.filter((item) => item.status === 'correct').length,
-      wrongCount: markedItems.filter((item) => item.status === 'wrong').length
-    });
-    refresh();
-    setQuiz(null);
   };
 
   return (
@@ -747,7 +1008,7 @@ function AllQuestionsQuiz({
       </div>
       <div className="quiz-actions">
         <button className="primary" disabled={!allAnswered || allMarked} onClick={() => void markAll()}><Check size={18} /> Mark all</button>
-        <button className="primary" disabled={!allMarked} onClick={() => void finish()}>Finish</button>
+        <button className="primary" disabled={!allMarked} onClick={() => void finishSession(quiz, setQuiz, refresh)}>Finish</button>
       </div>
     </section>
   );

@@ -1,6 +1,7 @@
 export type QuestionType = 'single_choice' | 'multiple_choice' | 'true_false';
 export type Difficulty = 'easy' | 'medium' | 'hard';
 export type ProgressStatus = 'unanswered' | 'correct' | 'wrong';
+export type QuizMode = 'standard' | 'instant';
 
 export interface TypeRule {
   label: string;
@@ -82,6 +83,34 @@ export interface AppSettings {
   showAllQuestions: boolean;
 }
 
+export interface ActiveSessionState {
+  id: 'current';
+  sessionId: string;
+  bankId: string;
+  questionIds: string[];
+  index: number;
+  selected: Record<string, string[]>;
+  marked: Record<string, QuestionProgress>;
+  optionOrderByQuestion: Record<string, string[]>;
+  createdAt: string;
+  showAllQuestions: boolean;
+  mode: QuizMode;
+}
+
+export interface ActiveSessionState {
+  id: 'current';
+  bankId: string;
+  questionIds: string[];
+  index: number;
+  selected: Record<string, string[]>;
+  marked: Record<string, QuestionProgress>;
+  optionOrderByQuestion: Record<string, string[]>;
+  sessionId: string;
+  createdAt: string;
+  showAllQuestions: boolean;
+  mode: QuizMode;
+}
+
 export interface AppBackup {
   format: 'quiz-helper-backup';
   version: 1;
@@ -90,4 +119,5 @@ export interface AppBackup {
   progress: QuestionProgress[];
   sessions: QuizSession[];
   settings: AppSettings;
+  activeSession?: ActiveSessionState;
 }
