@@ -84,7 +84,7 @@ export interface AppSettings {
 }
 
 export interface ActiveSessionState {
-  id: 'current';
+  id: string;
   sessionId: string;
   bankId: string;
   questionIds: string[];
@@ -98,14 +98,14 @@ export interface ActiveSessionState {
 }
 
 export interface ActiveSessionState {
-  id: 'current';
+  id: string;
+  sessionId: string;
   bankId: string;
   questionIds: string[];
   index: number;
   selected: Record<string, string[]>;
   marked: Record<string, QuestionProgress>;
   optionOrderByQuestion: Record<string, string[]>;
-  sessionId: string;
   createdAt: string;
   showAllQuestions: boolean;
   mode: QuizMode;
@@ -119,5 +119,5 @@ export interface AppBackup {
   progress: QuestionProgress[];
   sessions: QuizSession[];
   settings: AppSettings;
-  activeSession?: ActiveSessionState;
+  activeSessions: ActiveSessionState[];
 }

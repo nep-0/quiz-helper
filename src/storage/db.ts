@@ -49,18 +49,19 @@ export const saveActiveSession = async (state: ActiveSessionState) => {
   await db.activeSession.put(state);
 };
 
-export const loadActiveSession = async () => db.activeSession.get('current');
+export const loadActiveSession = async (bankId: string) => db.activeSession.get(bankId);
 
-export const clearActiveSession = async () => {
-  await db.activeSession.delete('current');
+export const clearActiveSession = async (bankId: string) => {
+  await db.activeSession.delete(bankId);
 };
 
 export const exportBackup = async (): Promise<AppBackup> => {
-  const [banks, progress, sessions, settings] = await Promise.all([
+  const [banks, progress, sessions, settings, activeSessions] = await Promise.all([
     db.banks.toArray(),
     db.progress.toArray(),
     db.sessions.toArray(),
-    db.settings.get('settings')
+    db.settings.get('settings'),
+    db.activeSession.toArray()
   ]);
   return {
     format: 'quiz-helper-backup',
@@ -69,7 +70,8 @@ export const exportBackup = async (): Promise<AppBackup> => {
     banks,
     progress,
     sessions,
-    settings: settings ?? defaultSettings
+    settings: settings ?? defaultSettings,
+    activeSessions
   };
 };
 
@@ -80,6 +82,7 @@ export const restoreBackup = async (backup: AppBackup) => {
     await db.progress.bulkPut(backup.progress);
     await db.sessions.bulkPut(backup.sessions);
     await db.settings.put(backup.settings ?? defaultSettings);
+    await db.activeSession.bulkPut(backup.activeSessions ?? []);
   });
 };
 
@@ -88,9 +91,6 @@ export const removeBank = async (bankId: string) => {
     await db.banks.delete(bankId);
     await db.progress.where('bankId').equals(bankId).delete();
     await db.sessions.where('bankId').equals(bankId).delete();
-    const active = await db.activeSession.get('current');
-    if (active?.bankId === bankId) {
-      await db.activeSession.delete('current');
-    }
+    await db.activeSession.delete(bankId);
   });
 };

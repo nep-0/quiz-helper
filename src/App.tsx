@@ -77,11 +77,12 @@ function App() {
 
   const selectedBank = data.banks.find((bank) => bank.bankId === selectedBankId) ?? data.banks[0];
   const progressByKey = useMemo(() => new Map(data.progress.map((item) => [item.key, item])), [data.progress]);
+  const activeSessionByBankId = useMemo(() => new Map(data.activeSessions.map((item) => [item.bankId, item])), [data.activeSessions]);
 
   useEffect(() => {
     if (!quiz) return;
     void saveActiveSession({
-      id: 'current',
+      id: quiz.bank.bankId,
       sessionId: quiz.sessionId,
       bankId: quiz.bank.bankId,
       questionIds: quiz.questions.map((item) => item.id),
@@ -95,12 +96,12 @@ function App() {
     });
   }, [quiz]);
 
-  const resumeSession = async () => {
-    const state = data.activeSession;
+  const resumeSession = async (bankId: string) => {
+    const state = activeSessionByBankId.get(bankId);
     if (!state) return;
     const bank = data.banks.find((item) => item.bankId === state.bankId);
     if (!bank) {
-      await clearActiveSession();
+      await clearActiveSession(state.bankId);
       refresh();
       notify('Saved session no longer exists; cleared.');
       return;
@@ -108,7 +109,7 @@ function App() {
     const questionMap = new Map(bank.questions.map((item) => [item.id, item]));
     const questions = state.questionIds.map((id) => questionMap.get(id)).filter((item): item is Question => Boolean(item));
     if (questions.length === 0) {
-      await clearActiveSession();
+      await clearActiveSession(state.bankId);
       refresh();
       return;
     }
@@ -195,6 +196,7 @@ function App() {
   const resetBankProgress = async (bank: QuizBank) => {
     if (!window.confirm(`Reset progress for "${bank.title}"? Every question will become unanswered.`)) return;
     await db.progress.where('bankId').equals(bank.bankId).delete();
+    await clearActiveSession(bank.bankId);
     refresh();
     notify('Progress reset.');
   };
@@ -251,7 +253,7 @@ function App() {
               notify={notify}
               showAllQuestions={data.settings.showAllQuestions}
               preserveOptionOrder={data.settings.preserveOptionOrder}
-              activeSession={data.activeSession}
+              activeSession={activeSessionByBankId.get(selectedBank.bankId)}
               resumeSession={resumeSession}
             />
           )}
@@ -488,7 +490,7 @@ function PracticeBuilder({
   showAllQuestions: boolean;
   preserveOptionOrder: boolean;
   activeSession?: ActiveSessionState;
-  resumeSession: () => Promise<void>;
+  resumeSession: (bankId: string) => Promise<void>;
 }) {
   const [filters, setFilters] = useState<QuizFilters>(defaultFilters);
   const [counts, setCounts] = useState<TypeCounts>(emptyCounts);
@@ -577,7 +579,7 @@ function PracticeBuilder({
           <div className="action-row">
             <button className="primary" disabled={!canStart} onClick={startQuiz}><Play size={18} /> Start</button>
             {activeSession && (
-              <button className="primary btn-accent" onClick={() => void resumeSession()}><RotateCcw size={18} /> Continue</button>
+              <button className="primary btn-accent" onClick={() => void resumeSession(bank.bankId)}><RotateCcw size={18} /> Continue</button>
             )}
           </div>
           <button className="secondary" onClick={() => { countsEdited.current = false; setFilters(defaultFilters()); }}><RotateCcw size={18} /> Reset</button>
@@ -632,7 +634,7 @@ const finishSession = async (quiz: ActiveQuiz, setQuiz: (quiz: ActiveQuiz | null
     correctCount: markedItems.filter((item) => item.status === 'correct').length,
     wrongCount: markedItems.filter((item) => item.status === 'wrong').length
   });
-  await clearActiveSession();
+  await clearActiveSession(quiz.bank.bankId);
   refresh();
   setQuiz(null);
 };
