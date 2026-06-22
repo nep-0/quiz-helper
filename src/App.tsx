@@ -20,6 +20,7 @@ import { getStatus, markQuestion, progressKey } from './domain/progress';
 import type { ActiveSessionState, AppBackup, ProgressStatus, Question, QuestionProgress, QuestionType, QuizBank, QuizMode } from './domain/quizTypes';
 import { FormulaText } from './components/FormulaText';
 import { useDbData } from './hooks/useDbData';
+import { useQuizShortcuts } from './hooks/useQuizShortcuts';
 import { downloadJson, isAppBackup, parseJsonFile, validateQuizBank } from './importExport/bankValidation';
 import { clearActiveSession, db, defaultSettings, exportBackup, removeBank, restoreBackup, saveActiveSession } from './storage/db';
 
@@ -691,6 +692,13 @@ function StandardQuizRunner({
     refresh();
   };
 
+  useQuizShortcuts({
+    goPrev: () => { if (quiz.index > 0) setQuiz({ ...quiz, index: quiz.index - 1 }); },
+    goNext: () => { if (quiz.index < quiz.questions.length - 1) setQuiz({ ...quiz, index: quiz.index + 1 }); },
+    selectOption: (index) => { const option = options[index]; if (option) setSelected(option.id); },
+    submitMultiple: () => { if (!marked && selected.length > 0) void mark(); }
+  }, true);
+
   return (
     <section className="panel quiz-panel">
       <div className="quiz-header">
@@ -780,6 +788,27 @@ function InstantQuizRunner({
     if (marked || selected.length === 0) return;
     void markNow(selected);
   };
+
+  useQuizShortcuts({
+    goPrev: () => { if (quiz.index > 0) setQuiz({ ...quiz, index: quiz.index - 1 }); },
+    goNext: () => { if (quiz.index < quiz.questions.length - 1) setQuiz({ ...quiz, index: quiz.index + 1 }); },
+    selectOption: (index) => { const option = options[index]; if (option) setSelected(option.id); },
+    submitMultiple
+  }, true);
+
+  useQuizShortcuts({
+    goPrev: () => { if (quiz.index > 0) setQuiz({ ...quiz, index: quiz.index - 1 }); },
+    goNext: () => { if (quiz.index < quiz.questions.length - 1) setQuiz({ ...quiz, index: quiz.index + 1 }); },
+    selectOption: (index) => { const option = options[index]; if (option) setSelected(option.id); },
+    submitMultiple
+  }, true);
+
+  useQuizShortcuts({
+    goPrev: () => { if (quiz.index > 0) setQuiz({ ...quiz, index: quiz.index - 1 }); },
+    goNext: () => { if (quiz.index < quiz.questions.length - 1) setQuiz({ ...quiz, index: quiz.index + 1 }); },
+    selectOption: (index) => { const option = options[index]; if (option) setSelected(option.id); },
+    submitMultiple
+  }, true);
 
   return (
     <section className="panel quiz-panel">
@@ -1034,7 +1063,7 @@ function DataTools({
   };
 
   return (
-    <section className="grid two">
+    <section className="grid three">
       <div className="panel">
         <h2>Import and Export</h2>
         <div className="tool-list">
@@ -1062,7 +1091,23 @@ function DataTools({
           <span>Preserve option order</span>
         </label>
       </div>
-      <div className="panel install-panel">
+      <div className="panel">
+        <h2>Keyboard Shortcuts</h2>
+        <p className="muted">Available during practice. Options use 1-4 (left hand) or 7-0 (right hand).</p>
+        <dl className="shortcuts">
+          <dt><kbd>1</kbd> <kbd>2</kbd> <kbd>3</kbd> <kbd>4</kbd></dt>
+          <dd>Select option 1-4</dd>
+          <dt><kbd>7</kbd> <kbd>8</kbd> <kbd>9</kbd> <kbd>0</kbd></dt>
+          <dd>Select option 1-4 (right hand)</dd>
+          <dt><kbd>H</kbd> <kbd>←</kbd> · <kbd>K</kbd> <kbd>↑</kbd></dt>
+          <dd>Previous question</dd>
+          <dt><kbd>J</kbd> <kbd>↓</kbd> · <kbd>L</kbd> <kbd>→</kbd></dt>
+          <dd>Next question</dd>
+          <dt><kbd>Space</kbd></dt>
+          <dd>Submit answer (multiple choice)</dd>
+        </dl>
+      </div>
+      <div className="panel install-panel span-full">
         <div className="panel-title compact">
           <div>
             <h2>Question Bank Skill</h2>
