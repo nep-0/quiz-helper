@@ -15,7 +15,7 @@ import {
   X
 } from 'lucide-react';
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { availableCounts, buildQuestionPool, defaultFilters, emptyCounts, pickRandomQuestions, questionTypes, statuses, type QuizFilters, type TypeCounts } from './domain/picker';
+import { availableCounts, buildQuestionPool, defaultFilters, emptyCounts, pickRandomQuestions, questionTypes, shuffle, statuses, type QuizFilters, type TypeCounts } from './domain/picker';
 import { getStatus, markQuestion, progressKey } from './domain/progress';
 import type { AppBackup, ProgressStatus, Question, QuestionProgress, QuestionType, QuizBank } from './domain/quizTypes';
 import { FormulaText } from './components/FormulaText';
@@ -31,6 +31,7 @@ interface ActiveQuiz {
   index: number;
   selected: Record<string, string[]>;
   marked: Record<string, QuestionProgress>;
+  optionOrderByQuestion: Record<string, string[]>;
   sessionId: string;
   createdAt: string;
   showAllQuestions: boolean;
@@ -49,6 +50,20 @@ const statusLabels: Record<ProgressStatus, string> = {
 };
 
 const skillInstallCommand = 'npx skills add https://github.com/nep-0/quiz-helper --skill question-bank-maker';
+
+export const buildOptionOrderByQuestion = (questions: Question[], preserveOptionOrder: boolean) =>
+  Object.fromEntries(
+    questions.map((question) => [
+      question.id,
+      (preserveOptionOrder || question.type === 'true_false' ? question.options : shuffle(question.options)).map((option) => option.id)
+    ])
+  );
+
+const orderedOptions = (question: Question, optionOrder: string[] | undefined) => {
+  if (!optionOrder) return question.options;
+  const byId = new Map(question.options.map((option) => [option.id, option]));
+  return optionOrder.map((id) => byId.get(id)).filter((option): option is Question['options'][number] => Boolean(option));
+};
 
 function App() {
   const { data, loading, refresh } = useDbData();
@@ -159,7 +174,7 @@ function App() {
       {message && <div className="toast">{message}</div>}
 
       {quiz ? (
-        <QuizRunner quiz={quiz} setQuiz={setQuiz} refresh={refresh} preserveOptionOrder={data.settings.preserveOptionOrder} progressByKey={progressByKey} />
+        <QuizRunner quiz={quiz} setQuiz={setQuiz} refresh={refresh} progressByKey={progressByKey} />
       ) : (
         <>
           {view === 'banks' && (
@@ -184,6 +199,7 @@ function App() {
               setQuiz={setQuiz}
               notify={notify}
               showAllQuestions={data.settings.showAllQuestions}
+              preserveOptionOrder={data.settings.preserveOptionOrder}
             />
           )}
           {view === 'data' && (
@@ -380,6 +396,24 @@ function AnswerLine({
   );
 }
 
+function AnswerSummary({ label, ids, question }: { label: string; ids: string[]; question: Question }) {
+  const selectedOptions = question.options.filter((option) => ids.includes(option.id));
+
+  return (
+    <p>
+      <strong>{label}:</strong>{' '}
+      {selectedOptions.length === 0
+        ? 'No answer'
+        : selectedOptions.map((option, index) => (
+          <span key={option.id}>
+            {index > 0 ? '; ' : ''}
+            <FormulaText text={option.text} />
+          </span>
+        ))}
+    </p>
+  );
+}
+
 function PracticeBuilder({
   bank,
   banks,
@@ -387,7 +421,8 @@ function PracticeBuilder({
   setSelectedBankId,
   setQuiz,
   notify,
-  showAllQuestions
+  showAllQuestions,
+  preserveOptionOrder
 }: {
   bank: QuizBank;
   banks: QuizBank[];
@@ -396,6 +431,7 @@ function PracticeBuilder({
   setQuiz: (quiz: ActiveQuiz) => void;
   notify: (text: string) => void;
   showAllQuestions: boolean;
+  preserveOptionOrder: boolean;
 }) {
   const [filters, setFilters] = useState<QuizFilters>(defaultFilters);
   const [counts, setCounts] = useState<TypeCounts>(emptyCounts);
@@ -421,12 +457,14 @@ function PracticeBuilder({
       notify('Adjust counts to match the available filtered questions.');
       return;
     }
+    const questions = pickRandomQuestions(pool, counts);
     setQuiz({
       bank,
-      questions: pickRandomQuestions(pool, counts),
+      questions,
       index: 0,
       selected: {},
       marked: {},
+      optionOrderByQuestion: buildOptionOrderByQuestion(questions, preserveOptionOrder),
       sessionId: crypto.randomUUID(),
       createdAt: new Date().toISOString(),
       showAllQuestions
@@ -513,23 +551,24 @@ function QuizRunner({
   quiz,
   setQuiz,
   refresh,
-  preserveOptionOrder,
   progressByKey
 }: {
   quiz: ActiveQuiz;
   setQuiz: (quiz: ActiveQuiz | null) => void;
   refresh: () => void;
-  preserveOptionOrder: boolean;
   progressByKey: Map<string, QuestionProgress>;
 }) {
   if (quiz.showAllQuestions) {
-    return <AllQuestionsQuiz quiz={quiz} setQuiz={setQuiz} refresh={refresh} preserveOptionOrder={preserveOptionOrder} progressByKey={progressByKey} />;
+    return <AllQuestionsQuiz quiz={quiz} setQuiz={setQuiz} refresh={refresh} progressByKey={progressByKey} />;
   }
 
   const question = quiz.questions[quiz.index];
   const selected = quiz.selected[question.id] ?? [];
   const marked = quiz.marked[question.id];
-  const options = useMemo(() => preserveOptionOrder ? question.options : [...question.options].sort(() => Math.random() - 0.5), [preserveOptionOrder, question]);
+  const options = useMemo(
+    () => orderedOptions(question, quiz.optionOrderByQuestion[question.id]),
+    [question, quiz.optionOrderByQuestion]
+  );
 
   const setSelected = (optionId: string) => {
     if (marked) return;
@@ -582,7 +621,6 @@ function QuizRunner({
             return (
               <label key={option.id} className={`option ${isSelected ? 'selected' : ''} ${isCorrect ? 'correct' : ''} ${isWrongSelection ? 'wrong' : ''}`}>
                 <input type={question.type === 'multiple_choice' ? 'checkbox' : 'radio'} name={question.id} checked={isSelected} onChange={() => setSelected(option.id)} />
-                <span className="option-label">{option.label}</span>
                 <span><FormulaText text={option.text} /></span>
               </label>
             );
@@ -591,8 +629,8 @@ function QuizRunner({
         {marked && (
           <div className={`result ${marked.status}`}>
             <strong>{marked.status === 'correct' ? 'Correct' : 'Wrong'}</strong>
-            <p>Your answer: {marked.latestSelectedOptionIds.join(', ') || 'No answer'}</p>
-            <p>Correct answer: {marked.latestCorrectOptionIds.join(', ')}</p>
+            <AnswerSummary label="Your answer" ids={marked.latestSelectedOptionIds} question={question} />
+            <AnswerSummary label="Correct answer" ids={marked.latestCorrectOptionIds} question={question} />
             {question.explanation && <p><FormulaText text={question.explanation} /></p>}
           </div>
         )}
@@ -614,13 +652,11 @@ function AllQuestionsQuiz({
   quiz,
   setQuiz,
   refresh,
-  preserveOptionOrder,
   progressByKey
 }: {
   quiz: ActiveQuiz;
   setQuiz: (quiz: ActiveQuiz | null) => void;
   refresh: () => void;
-  preserveOptionOrder: boolean;
   progressByKey: Map<string, QuestionProgress>;
 }) {
   const allAnswered = quiz.questions.every((question) => (quiz.selected[question.id] ?? []).length > 0);
@@ -678,7 +714,7 @@ function AllQuestionsQuiz({
         {quiz.questions.map((question, questionIndex) => {
           const selected = quiz.selected[question.id] ?? [];
           const marked = quiz.marked[question.id];
-          const options = preserveOptionOrder ? question.options : [...question.options].sort(() => Math.random() - 0.5);
+          const options = orderedOptions(question, quiz.optionOrderByQuestion[question.id]);
           return (
             <article className="question-card stacked" key={question.id}>
               <p className="question-number">Question {questionIndex + 1} · #{question.number} · {labels[question.type]} · {question.difficulty ?? 'unspecified'}</p>
@@ -692,7 +728,6 @@ function AllQuestionsQuiz({
                   return (
                     <label key={option.id} className={`option ${isSelected ? 'selected' : ''} ${isCorrect ? 'correct' : ''} ${isWrongSelection ? 'wrong' : ''}`}>
                       <input type={question.type === 'multiple_choice' ? 'checkbox' : 'radio'} name={question.id} checked={isSelected} onChange={() => setSelected(question, option.id)} />
-                      <span className="option-label">{option.label}</span>
                       <span><FormulaText text={option.text} /></span>
                     </label>
                   );
@@ -701,8 +736,8 @@ function AllQuestionsQuiz({
               {marked && (
                 <div className={`result ${marked.status}`}>
                   <strong>{marked.status === 'correct' ? 'Correct' : 'Wrong'}</strong>
-                  <p>Your answer: {marked.latestSelectedOptionIds.join(', ') || 'No answer'}</p>
-                  <p>Correct answer: {marked.latestCorrectOptionIds.join(', ')}</p>
+                  <AnswerSummary label="Your answer" ids={marked.latestSelectedOptionIds} question={question} />
+                  <AnswerSummary label="Correct answer" ids={marked.latestCorrectOptionIds} question={question} />
                   {question.explanation && <p><FormulaText text={question.explanation} /></p>}
                 </div>
               )}
