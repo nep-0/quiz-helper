@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { db, defaultSettings, ensureSeedData } from '../storage/db';
 import type { ActiveSessionState, AppSettings, QuestionProgress, QuizBank, QuizSession } from '../domain/quizTypes';
 
@@ -20,11 +20,14 @@ export const useDbData = () => {
   });
   const [loading, setLoading] = useState(true);
   const [refreshToken, setRefreshToken] = useState(0);
+  const hasLoaded = useRef(false);
 
   useEffect(() => {
     let cancelled = false;
     const load = async () => {
-      setLoading(true);
+      if (!hasLoaded.current) {
+        setLoading(true);
+      }
       await ensureSeedData();
       const [banks, progress, sessions, settings, activeSessions] = await Promise.all([
         db.banks.toArray(),
@@ -35,6 +38,7 @@ export const useDbData = () => {
       ]);
       if (!cancelled) {
         setData({ banks, progress, sessions, settings: { ...defaultSettings, ...(settings ?? {}) }, activeSessions });
+        hasLoaded.current = true;
         setLoading(false);
       }
     };
