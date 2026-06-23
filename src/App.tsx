@@ -798,20 +798,6 @@ function InstantQuizRunner({
     submitMultiple
   }, true);
 
-  useQuizShortcuts({
-    goPrev: () => { if (quiz.index > 0) setQuiz({ ...quiz, index: quiz.index - 1 }); },
-    goNext: () => { if (quiz.index < quiz.questions.length - 1) setQuiz({ ...quiz, index: quiz.index + 1 }); },
-    selectOption: (index) => { const option = options[index]; if (option) setSelected(option.id); },
-    submitMultiple
-  }, true);
-
-  useQuizShortcuts({
-    goPrev: () => { if (quiz.index > 0) setQuiz({ ...quiz, index: quiz.index - 1 }); },
-    goNext: () => { if (quiz.index < quiz.questions.length - 1) setQuiz({ ...quiz, index: quiz.index + 1 }); },
-    selectOption: (index) => { const option = options[index]; if (option) setSelected(option.id); },
-    submitMultiple
-  }, true);
-
   return (
     <section className="panel quiz-panel">
       <div className="quiz-header">
