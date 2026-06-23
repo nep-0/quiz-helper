@@ -144,6 +144,24 @@ h3 {
   grid-template-columns: minmax(280px, 0.8fr) minmax(320px, 1.2fr);
 }
 
+.grid.three {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+@media (max-width: 1100px) {
+  .grid.three {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .grid.three .span-full {
+    grid-column: auto;
+  }
+}
+
+.span-full {
+  grid-column: 1 / -1;
+}
+
 .panel {
   border: 1px solid #d7ded9;
   border-radius: 8px;
@@ -404,6 +422,54 @@ h3 {
   gap: 12px;
 }
 
+.action-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.action-row button {
+  flex: 1 1 0;
+  min-width: 140px;
+}
+
+.btn-accent {
+  color: #ffffff;
+  background: #4a9385;
+}
+
+kbd {
+  display: inline-block;
+  min-width: 1.6em;
+  padding: 2px 6px;
+  border: 1px solid #d2dbd6;
+  border-bottom-width: 2px;
+  border-radius: 6px;
+  background: #ffffff;
+  font-family: inherit;
+  font-size: 0.85em;
+  text-align: center;
+}
+
+.shortcuts {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 8px 14px;
+  margin: 0;
+}
+
+.shortcuts dt {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  align-items: center;
+}
+
+.shortcuts dd {
+  margin: 0;
+  align-self: center;
+}
+
 .count-row {
   display: grid;
   grid-template-columns: 1fr 88px;
@@ -556,6 +622,7 @@ input[type="file"] {
   }
 
   .grid.two,
+  .grid.three,
   .builder {
     grid-template-columns: 1fr;
   }

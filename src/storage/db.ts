@@ -1,12 +1,13 @@
 import Dexie, { type EntityTable } from 'dexie';
 import bundledBank from '../../xi-question-bank.json';
-import type { AppBackup, AppSettings, QuestionProgress, QuizBank, QuizSession } from '../domain/quizTypes';
+import type { ActiveSessionState, AppBackup, AppSettings, QuestionProgress, QuizBank, QuizSession } from '../domain/quizTypes';
 
 export class QuizHelperDb extends Dexie {
   banks!: EntityTable<QuizBank, 'bankId'>;
   progress!: EntityTable<QuestionProgress, 'key'>;
   sessions!: EntityTable<QuizSession, 'id'>;
   settings!: EntityTable<AppSettings, 'id'>;
+  activeSession!: EntityTable<ActiveSessionState, 'id'>;
 
   constructor() {
     super('quiz-helper');
@@ -15,6 +16,13 @@ export class QuizHelperDb extends Dexie {
       progress: 'key, bankId, questionId, status',
       sessions: 'id, bankId, createdAt',
       settings: 'id'
+    });
+    this.version(2).stores({
+      banks: 'bankId, title, subject, locale',
+      progress: 'key, bankId, questionId, status',
+      sessions: 'id, bankId, createdAt',
+      settings: 'id',
+      activeSession: 'id, bankId'
     });
   }
 }
@@ -37,12 +45,23 @@ export const ensureSeedData = async () => {
   }
 };
 
+export const saveActiveSession = async (state: ActiveSessionState) => {
+  await db.activeSession.put(state);
+};
+
+export const loadActiveSession = async (bankId: string) => db.activeSession.get(bankId);
+
+export const clearActiveSession = async (bankId: string) => {
+  await db.activeSession.delete(bankId);
+};
+
 export const exportBackup = async (): Promise<AppBackup> => {
-  const [banks, progress, sessions, settings] = await Promise.all([
+  const [banks, progress, sessions, settings, activeSessions] = await Promise.all([
     db.banks.toArray(),
     db.progress.toArray(),
     db.sessions.toArray(),
-    db.settings.get('settings')
+    db.settings.get('settings'),
+    db.activeSession.toArray()
   ]);
   return {
     format: 'quiz-helper-backup',
@@ -51,24 +70,27 @@ export const exportBackup = async (): Promise<AppBackup> => {
     banks,
     progress,
     sessions,
-    settings: settings ?? defaultSettings
+    settings: settings ?? defaultSettings,
+    activeSessions
   };
 };
 
 export const restoreBackup = async (backup: AppBackup) => {
-  await db.transaction('rw', db.banks, db.progress, db.sessions, db.settings, async () => {
-    await Promise.all([db.banks.clear(), db.progress.clear(), db.sessions.clear(), db.settings.clear()]);
+  await db.transaction('rw', db.banks, db.progress, db.sessions, db.settings, db.activeSession, async () => {
+    await Promise.all([db.banks.clear(), db.progress.clear(), db.sessions.clear(), db.settings.clear(), db.activeSession.clear()]);
     await db.banks.bulkPut(backup.banks);
     await db.progress.bulkPut(backup.progress);
     await db.sessions.bulkPut(backup.sessions);
     await db.settings.put(backup.settings ?? defaultSettings);
+    await db.activeSession.bulkPut(backup.activeSessions ?? []);
   });
 };
 
 export const removeBank = async (bankId: string) => {
-  await db.transaction('rw', db.banks, db.progress, db.sessions, async () => {
+  await db.transaction('rw', db.banks, db.progress, db.sessions, db.activeSession, async () => {
     await db.banks.delete(bankId);
     await db.progress.where('bankId').equals(bankId).delete();
     await db.sessions.where('bankId').equals(bankId).delete();
+    await db.activeSession.delete(bankId);
   });
 };
