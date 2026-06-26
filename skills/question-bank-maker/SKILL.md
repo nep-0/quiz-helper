@@ -34,7 +34,9 @@ description: Create one or more JSON question banks from conversation context, n
    - Do not use explanations that only point back to material, such as "see the textbook", "according to the source", "refer to chapter 3", or page/section citations without the actual reasoning.
 
 5. Validate before finalizing.
-   - If working in a repo with Node tooling, use an existing validator if present.
+   - Prefer `scripts/validate_question_bank.py <path/to/bank.json>` for file outputs. Use `scripts/validate_question_bank.js <path/to/bank.json>` when Python is unavailable.
+   - Both scripts validate strict JSON and cross-field rules such as unique IDs, section references, and answer-option consistency. The Python script also validates the bundled schema when Python `jsonschema` is available; the JavaScript script implements the bundled schema's concrete rules without dependencies.
+   - If working in a repo with a project-specific validator, use it as an additional check.
    - Otherwise inspect JSON carefully for required fields, valid enums, unique IDs, option-answer consistency, and strict JSON syntax.
    - Do not invent facts from weak source material. Mark uncertainty in explanations only if useful to the user.
 
